@@ -1,0 +1,49 @@
+{
+  "data": {
+    "buyback_diffrent_store_price": 39837.04,
+    "buyback_same_store_price": 42413.04000000001,
+    "category": "PENDANTS",
+    "collection": "Ballerina",
+    "current_price": 48268.4,
+    "design_no": "PF3034",
+    "gross_wt": 0.87,
+    "image": "http://api.rsdpl.com:8090/openbravo/dms/DSJ/VerifyAndTrack/EM_DS_JEW_IMAGE/14V3R.jpg",
+    "is_coin": false,
+    "jewel_size": "",
+    "metal_sd_purchase_price": 21508,
+    "metal_total_current_price": 5698.4,
+    "mount_details_1": "GOLD 18 KT ROSE",
+    "mount_details_2": "20 pcs 0.17 cts | EF-VVS",
+    "net_wt": 0.838,
+    "product_type": "Jewellery",
+    "purchase_date": "",
+    "purchase_discount": -11052,
+    "purchase_from": "",
+    "purchase_price": 21508,
+    "purchase_price_final": 32560,
+    "sd_colour_clarity": "EF-VVS",
+    "sd_cts": 0.17,
+    "sd_pcs": 20,
+    "sd_total_current_price": 15810,
+    "slt_details": [
+      {
+        "carat": 0.14,
+        "clarity": "VVS",
+        "colour": "EF",
+        "current_price": 25760,
+        "purchase_price": 0,
+        "shape": "RND",
+        "uid": "18P7H63"
+      }
+    ],
+    "slt_total_cts": 0.14,
+    "slt_total_current_price": 25760,
+    "slt_total_pcs": 1,
+    "slt_total_purchase_price": 0,
+    "solitaire_details_1": "1 pcs | RND 0.14cts. EF, VVS",
+    "uid": "14V3R",
+    "uid_status": "UNSOLD"
+  },
+  "flag": true,
+  "message": "Sucess"
+}

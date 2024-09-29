@@ -1,0 +1,17 @@
+{
+  "typescript.tsdk": "node_modules/.pnpm/typescript@5.0.4/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "githubPullRequests.remotes": [
+    "origin",
+    "upstream",
+    "https://github.com/VikrantBanwal/divine-solitaire-frontend-client.git"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
+}

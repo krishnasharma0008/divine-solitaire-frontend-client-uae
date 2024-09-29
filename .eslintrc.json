@@ -1,0 +1,27 @@
+{
+  "plugins": ["@typescript-eslint", "check-file", "import"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "max-len": [0, 160, 2, { "ignoreUrls": true }],
+    "@next/next/no-document-import-in-page": "off",
+    "check-file/filename-naming-convention": [
+      "error",
+      { "src/**/*.{ts, tsx}": "KEBAB_CASE" }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["builtin", "external"],
+          ["internal"],
+          ["parent", "sibling", "index"],
+          ["object"]
+        ],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "data": {
+    "buyback_diffrent_store_price": 63719.68,
+    "buyback_same_store_price": 69644.68,
+    "category": "RINGS",
+    "collection": "Generic",
+    "current_price": 82902.8,
+    "design_no": "RF1133",
+    "gross_wt": 2.75,
+    "image": "https://api.rsdpl.com/openbravo/dms/DSJ/VerifyAndTrack/EM_DS_JEW_IMAGE/7GNLQ.jpg",
+    "is_coin": false,
+    "jewel_size": "",
+    "metal_sd_purchase_price": 13395,
+    "metal_total_current_price": 18332.8,
+    "mount_details_1": "GOLD 18 KT YELLOW",
+    "mount_details_2": "17 pcs 0.07 cts | GH-VS",
+    "net_wt": 2.696,
+    "product_type": "Jewellery",
+    "purchase_date": "28/Feb/2018",
+    "purchase_discount": 4457,
+    "purchase_from": "ANOPCHAND TILOKCHAND JEWELLERS PVT LTD",
+    "purchase_price": 56645,
+    "purchase_price_final": 52188,
+    "sd_colour_clarity": "GH-VS",
+    "sd_cts": 0.07,
+    "sd_pcs": 17,
+    "sd_total_current_price": 5320,
+    "slt_details": [
+      {
+        "carat": 0.25,
+        "clarity": "VVS1",
+        "colour": "F",
+        "current_price": 59250,
+        "purchase_price": 43250,
+        "shape": "RND",
+        "uid": "36Y7F55"
+      }
+    ],
+    "slt_total_cts": 0.25,
+    "slt_total_current_price": 59250,
+    "slt_total_pcs": 1,
+    "slt_total_purchase_price": 43250,
+    "solitaire_details_1": "1 pcs | RND 0.25cts. F, VVS1",
+    "uid": "7GNLQ",
+    "uid_status": "SOLD"
+  },
+  "flag": true,
+  "message": "Sucess"
+}

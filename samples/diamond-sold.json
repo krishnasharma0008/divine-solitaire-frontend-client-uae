@@ -1,0 +1,49 @@
+{
+  "data": {
+    "buyback_diffrent_store_price": 106488.00000000001,
+    "buyback_same_store_price": 119799.00000000001,
+    "category": "",
+    "collection": "",
+    "current_price": 133110,
+    "design_no": "RND 0.51 I VVS1",
+    "gross_wt": 0,
+    "image": "",
+    "is_coin": false,
+    "jewel_size": "",
+    "metal_sd_purchase_price": 0,
+    "metal_total_current_price": 0,
+    "mount_details_1": "Natural Diamond",
+    "mount_details_2": "",
+    "net_wt": 0,
+    "product_type": "Diamond",
+    "purchase_date": "25/Mar/2023",
+    "purchase_discount": 0,
+    "purchase_from": "KULDIP SONS JEWELLERS (P) LTD.(TN)",
+    "purchase_price": 141780,
+    "purchase_price_final": 141780,
+    "sd_colour_clarity": "",
+    "sd_cts": 0,
+    "sd_pcs": 0,
+    "sd_total_current_price": 0,
+    "slt_details": [
+      {
+        "carat": 0.51,
+        "clarity": "VVS1",
+        "colour": "I",
+        "current_price": 133110,
+        "purchase_price": 141780,
+        "shape": "RND",
+        "uid": "10A5J37"
+      }
+    ],
+    "slt_total_cts": 0.51,
+    "slt_total_current_price": 133110,
+    "slt_total_pcs": 1,
+    "slt_total_purchase_price": 141780,
+    "solitaire_details_1": "RND 0.51cts. I VVS1",
+    "uid": "10A5J37",
+    "uid_status": "SOLD"
+  },
+  "flag": true,
+  "message": "Sucess"
+}

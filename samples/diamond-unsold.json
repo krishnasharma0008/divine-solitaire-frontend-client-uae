@@ -1,0 +1,49 @@
+{
+  "data": {
+    "buyback_diffrent_store_price": 29040,
+    "buyback_same_store_price": 32670,
+    "category": "",
+    "collection": "",
+    "current_price": 36300,
+    "design_no": "RND 0.22 J VVS2",
+    "gross_wt": 0,
+    "image": "",
+    "is_coin": false,
+    "jewel_size": "",
+    "metal_sd_purchase_price": 0,
+    "metal_total_current_price": 0,
+    "mount_details_1": "Natural Diamond",
+    "mount_details_2": "",
+    "net_wt": 0,
+    "product_type": "Diamond",
+    "purchase_date": "",
+    "purchase_discount": 0,
+    "purchase_from": "",
+    "purchase_price": 0,
+    "purchase_price_final": 0,
+    "sd_colour_clarity": "",
+    "sd_cts": 0,
+    "sd_pcs": 0,
+    "sd_total_current_price": 0,
+    "slt_details": [
+      {
+        "carat": 0.22,
+        "clarity": "VVS2",
+        "colour": "J",
+        "current_price": 36300,
+        "purchase_price": 0,
+        "shape": "RND",
+        "uid": "16A5C00"
+      }
+    ],
+    "slt_total_cts": 0.22,
+    "slt_total_current_price": 36300,
+    "slt_total_pcs": 1,
+    "slt_total_purchase_price": 0,
+    "solitaire_details_1": "RND 0.22cts. J VVS2",
+    "uid": "16A5C00",
+    "uid_status": "UNSOLD"
+  },
+  "flag": true,
+  "message": "Sucess"
+}

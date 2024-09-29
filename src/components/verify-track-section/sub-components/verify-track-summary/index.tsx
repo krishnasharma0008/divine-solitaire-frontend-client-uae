@@ -1,0 +1,349 @@
+import { Tooltip } from "@material-tailwind/react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+
+import {
+  AddToWishlistRequest,
+  addProductToPortfolio,
+  addProductToWishlist,
+} from "@/api/verify-track";
+import { BorderBar, Button } from "@/components";
+//import Carousel from "@/components/common/carousel";
+//import Checkbox from "@/components/common/checkbox";
+import DetailsTable from "@/components/common/details-table";
+import ImageGallery from "@/components/common/image-gallery";
+//import generateImage from "@/components/common/imagewriter";
+import LoginModal from "@/components/modals/login-modal";
+import { NOTIFICATION_MESSAGES } from "@/config";
+import LoaderContext from "@/context/loader-context";
+import NotificationContext from "@/context/notification-context";
+import { getToken } from "@/local-storage";
+import {
+  isJewelleryProduct,
+  formatByCurrency,
+  isDiamondProduct,
+  isSoldProduct,
+  isCoinProduct,
+} from "@/util";
+
+import { VerifyTrackSummaryDetailsAccordion } from "./verify-track-summary-accordion";
+import VerifyTrackSummaryMountAccordion from "./verify-track-summary-accordion/verify-track-summary-mount-accordion";
+import VerifyTrackSummarySltAccordion from "./verify-track-summary-accordion/verify-track-summary-slt-accordion";
+import VerifyTrackSummaryPopup from "./verify-track-summary-popup";
+import { VerifyTrackContext } from "../../../../context/verify-track-context";
+
+const VerifyTrackSummary: React.FC = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
+  const [openInsureNow, setOpenInsureNow] = useState<boolean>(false);
+
+  const { push } = useRouter();
+
+  const {
+    productDetails,
+    isAdded,
+    isWishlist,
+    updateProductDetails,
+    setSwitchToInsurance,
+  } = useContext(VerifyTrackContext);
+  const { showLoader, hideLoader } = useContext(LoaderContext);
+  const { notify, notifyErr } = useContext(NotificationContext);
+
+  const handleOpenInsurance = () => setOpenInsureNow(true);
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (body) {
+      if (openInsureNow) {
+        body.className = document.querySelector("body")?.className + " hide";
+        setSwitchToInsurance(true);
+      } else {
+        body.className =
+          document.querySelector("body")?.className.replace("hide", "") || "";
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openInsureNow]);
+
+  const handleClick = async () => {
+    showLoader();
+    try {
+      if (isAdded) {
+        push(isWishlist ? "?/wishlist" : "/portfolio");
+        return;
+      } else if (!getToken()) {
+        setShowLogin(true);
+        hideLoader();
+        return;
+      }
+      await handleAdd();
+      await updateProductDetails(true);
+      notify(
+        isWishlist
+          ? NOTIFICATION_MESSAGES.ADDED_TO_WISHLIST
+          : NOTIFICATION_MESSAGES.ADDED_TO_PORTFOLIO
+      );
+    } catch (err) {
+      console.log(err);
+      notifyErr(NOTIFICATION_MESSAGES.ERROR);
+    }
+    hideLoader();
+  };
+
+  const handleAdd = async () => {
+    const payload: AddToWishlistRequest = {
+      carat:
+        (productDetails?.sd_cts || 0) + (productDetails?.slt_total_cts || 0),
+      current_price: productDetails?.current_price || 0,
+      design_no: productDetails?.design_no || "",
+      imgurl:
+        productDetails?.product_type === "Jewellery"
+          ? productDetails.image
+          : productDetails?.slt_details[0]?.shape || "",
+      jewelcat: productDetails?.category || "",
+      product_type: productDetails?.product_type || "",
+      purchase_price: productDetails?.purchase_price || 0,
+      uid: productDetails?.uid || "",
+    };
+
+    if (isWishlist) {
+      await addProductToWishlist(payload);
+    } else {
+      await addProductToPortfolio(payload);
+    }
+  };
+
+  if (!productDetails) return null;
+
+  const isValidURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  if (productDetails !== null && productDetails.product_type === "Diamond") {
+    productDetails.images = [
+      "/vtdia/carousel_1.png",
+      "/vtdia/carousel_2.png",
+      "/vtdia/carousel_3.png",
+      "/vtdia/carousel_4.png",
+    ];
+
+    //console.log(productDetails.images);
+  }
+
+  const imageGalleryImages = productDetails.images.map((url, index) => ({
+    url: url,
+    thumbnailUrl: url, // Use the same URL for thumbnails (you can customize this)
+    title: `Image ${index + 1}`, // Set a title (you can customize this)
+    uid: productDetails.uid,
+    //type: "image",
+  }));
+
+  //console.log("Image Gallery :", imageGalleryImages);
+
+   const validVideoURLs = productDetails.videos?.filter(isValidURL) || [];
+  // if (validVideoURLs.length > 0) {
+  //   imageGalleryImages.unshift({
+  //     url: validVideoURLs[0],
+  //     thumbnailUrl: validVideoURLs[0],
+  //     title: "Video 1",
+  //     uid: productDetails.uid,
+  //     //type: "video",
+  //   });
+  // }
+
+  validVideoURLs.forEach((videoURL, index) => {
+    imageGalleryImages.splice(index, 0, {
+      url: videoURL,
+      thumbnailUrl: videoURL,
+      title: `Video ${index + 1}`,
+      uid: productDetails.uid,
+    });
+  });
+
+  console.log("Image Gallery :", imageGalleryImages);
+
+  return (
+    <div className="[&>div]:px-4 [&>div]:pb-4 [&>div]:md:px-0 [&>.swiper]:border-none ">
+      <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
+      <VerifyTrackSummaryPopup
+        open={openInsureNow}
+        setOpen={setOpenInsureNow}
+      />
+      {/* <Carousel
+        type="slide"
+        cardType="ImageCard"
+        className="border"
+        slidesPerView={1}
+        navigation={false}
+        items={carouselImages}
+      /> */}
+      <ImageGallery images={imageGalleryImages} />
+      <div className="w-full">
+        <div className="mt-10 mb-7 flex justify-between">
+          <div className="">{`UID : ${productDetails.uid}`}</div>
+          <div className="">{`Design No. : ${productDetails.design_no}`}</div>
+        </div>
+        <div className="text-gold text-3xl leading-8 font-newsreader font-semibold">
+          {`${formatByCurrency(
+            Math.round(productDetails.current_price),
+            productDetails.currency_locale,
+            productDetails.currency_code
+          )}`}
+          <span className="font-montserrat text-sm leading-4 ml-2 font-body font-normal leading-none">
+            Excl. GST
+          </span>
+          {!isCoinProduct(productDetails) &&
+          isJewelleryProduct(productDetails) === false ? (
+            // <Tooltip
+            //   content={
+            //     <div className="w-auto">
+            //       <Typography
+            //         variant="small"
+            //         color="white"
+            //         className="font-normal opacity-80"
+            //       >
+            //         Premium charges may be applicable
+            //       </Typography>
+            //     </div>
+            //   }
+            // >
+            <Tooltip content="Premium charges may be applicable">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6 text-black float-right"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                />
+              </svg>
+            </Tooltip>
+          ) : (
+            ""
+          )}
+        </div>
+        {productDetails.category && (
+          <div className="uppercase mt-2">
+            {productDetails.category} - {productDetails.collection}
+          </div>
+        )}
+      </div>
+      <BorderBar className="my-3" />
+
+      {isJewelleryProduct(productDetails) && (
+        <>
+          <VerifyTrackSummarySltAccordion productDetails={productDetails} />
+          <VerifyTrackSummaryMountAccordion productDetails={productDetails} />
+        </>
+      )}
+
+      {isDiamondProduct(productDetails) && (
+        <>
+          <DetailsTable
+            title="Divine Solitaires: "
+            headings={["Shape", "Carat", "Colour", "Clarity"]}
+            rows={productDetails.slt_details?.map((item) => [
+              item.shape,
+              item.carat.toFixed(2),
+              item.colour,
+              item.clarity,
+            ])}
+            growth={
+              isSoldProduct(productDetails)
+                ? ((productDetails.slt_details[0].current_price -
+                    productDetails.slt_details[0].purchase_price) /
+                    productDetails.slt_details[0].purchase_price) *
+                  100
+                : undefined
+            }
+          />
+        </>
+      )}
+      {isSoldProduct(productDetails) && (
+        <>
+          <VerifyTrackSummaryDetailsAccordion
+            discount={productDetails.purchase_discount}
+            purchaseAmount={productDetails.purchase_price as number}
+            premium={0}
+            total={productDetails.purchase_price_final as number}
+            currency_locale={productDetails.currency_locale}
+            currency_code={productDetails.currency_code}
+            className="mt-9"
+          />
+          <div className="mt-4 text-base sm:text-lg px-4 font-medium">
+            {"Jeweller's Name:"}
+          </div>
+          <div className="mt-2 text-sm sm:text-base px-4">
+            {productDetails.purchase_from}
+          </div>
+
+          <div className="mt-4 text-base sm:text-lg px-4 font-medium">
+            {"Date Of Purchase:"}
+          </div>
+          <div className="mt-2 text-sm sm:text-base px-4">
+            {productDetails.purchase_date}
+          </div>
+        </>
+      )}
+
+      <BorderBar className="my-8" />
+
+      {/* <Checkbox
+        id="remember_me"
+        onChange={handleCheckboxChange}
+        className="text-base leading-5"
+      >
+        Please sign me up
+      </Checkbox> */}
+      <div
+        className={`flex ${
+          productDetails.uid_status === "SOLD"
+            ? "justify-between"
+            : "justify-center"
+        } gap-1 mt-14`}
+      >
+        <Button
+          themeType="light"
+          classes="w-6/12 text-xs sm:text-base leading-5 font-medium"
+          onClick={handleOpenInsurance}
+        >
+          INSURE NOW
+        </Button>
+        {/* <Button
+          themeType="dark"
+          classes="w-6/12 text-xs sm:text-base leading-5 font-medium"
+          onClick={handleClick}
+        >
+          {`${isAdded ? "View" : "Add To"} ${
+            isWishlist ? "Wishlist" : "Portfolio"
+          }`}
+        </Button> */}
+        <Button
+          themeType="dark"
+          classes={`w-6/12 text-xs sm:text-base leading-5 font-medium ${
+            productDetails.uid_status !== "SOLD" && "hidden"
+          }`}
+          onClick={handleClick}
+        >
+          {`${isAdded ? "View" : "Add To"} ${
+            //isWishlist === true && "Portfolio"
+            productDetails.uid_status === "SOLD" && "Portfolio"
+          }`}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default VerifyTrackSummary;
