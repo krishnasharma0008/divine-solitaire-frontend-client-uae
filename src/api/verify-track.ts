@@ -53,7 +53,9 @@ const getVerifyTrackByUid = (
   uid: string,countrycode:string
 ): Promise<AxiosResponse<VerifyTrackByUidResponse>> =>{
   console.log("Country Code : ",countrycode);
-  return callWebService(`${verifyTrackEndpoint.url}/${uid}?countrycode=${countrycode}`, {
+
+  //return callWebService(`${verifyTrackEndpoint.url}/${uid}?countrycode=${countrycode}`, {
+    return callWebService(`${verifyTrackEndpoint.url}/${uid}?countrycode=${countrycode.slice(0, 2)}&islocal=${countrycode.slice(3)}`, {
     method: verifyTrackEndpoint.method,
     timeout: 60 * 1000,
   });

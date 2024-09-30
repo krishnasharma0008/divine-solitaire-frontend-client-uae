@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 import { URLs } from "@/constants";
 import { useCurrency } from "@/context/currency-context";
-import Currency from "@/enum/currency-enum";
+//import Currency from "@/enum/currency-enum";
 //import useCountryCode from "@/hooks/use-country-code";
 import { Breadcrumbs } from "@/interface/breadcrumbs";
 import { deleteToken, getToken } from "@/local-storage";
@@ -34,37 +34,13 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  // const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { push } = useRouter();
 
-  // const toggleDropdown = () => {
-  //   setDropdownOpen((prev) => !prev);
-  // };
-  //const { currency, setCurrency } = useCurrency();
-
-  //const countryCode = useCountryCode();
-  //console.log("Country Code", countryCode);
-  // const [dropValue, setDropValue] = useState<Currency>(
-  //   countryCurrencyMap[countryCode || Currency.USD]
-  // );
   const { currency, setCurrency } = useCurrency();
 
-  // useEffect(() => {
-  //   console.log("selected currency", currency);
-  //   // Set currency based on country code
-  //   if (countryCode) {
-  //     const currency = countryCurrencyMap[countryCode] || Currency.USD; // Fallback to USD
-  //     setCurrency(currency);
-  //   }
-  // }, [countryCode]);
-
-  // const handleDropdownChange = (selectedValue: string) => {
-  //   //console.log("selected currency", selectedValue);
-  //   setDropValue(selectedValue as Currency); // Ensure the value is a valid Currency
-  // };
   const handleDropdownChange = (selectedValue: string) => {
     console.log("selected currency", selectedValue);
-    setCurrency(selectedValue as Currency);
+    setCurrency(selectedValue);
   };
 
   const logout = () => {
@@ -214,7 +190,7 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
       <div className="lg:w-1/3 flex justify-end gap-1 items-center">
         <div className="relative w-24 h-10 rounded">
           <Dropdown
-            options={Object.values(Currency)}
+            //options={Object.values(Currency)}
             value={currency} // Correctly bind the selected value
             onChange={handleDropdownChange} // Pass the change handler
             disabled={false}

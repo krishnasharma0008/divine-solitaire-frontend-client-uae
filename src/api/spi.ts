@@ -23,7 +23,8 @@ const getSolitairePriceIndex = (
       shape: Shape.SPIROUND,
       month,
       year,
-      countrycode
+      countrycode :countrycode.slice(0, 2),
+      islocal :countrycode.slice(3)
     },
   });
 

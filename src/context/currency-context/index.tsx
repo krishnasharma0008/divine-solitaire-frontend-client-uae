@@ -1,19 +1,9 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
-
-import Currency from "@/enum/currency-enum"; // Ensure you have a Currency enum defined
-import useCountryCode from "@/hooks/use-country-code";
-import { countryCurrencyMap } from "@/util/country-currency-map";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define the context type
 interface CurrencyContextType {
-  currency: Currency;
-  setCurrency: (currency: Currency) => void;
+  currency: string;
+  setCurrency: (currency: string) => void;
 }
 
 // Create context without providing a default function implementation for setCurrency
@@ -25,25 +15,10 @@ const CurrencyContext = createContext<CurrencyContextType | undefined>(
 export const CurrencyProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [currency, setCurrency] = useState<Currency>(Currency.USD); // Default to USD or any preferred currency
-
-  // Function to update the currency state
-  const updateCurrency = (newCurrency: Currency) => {
-    setCurrency(newCurrency);
-  };
-
-  //fetch country code
-  const countryCode = useCountryCode();
-
-  useEffect(() => {
-    if (countryCode) {
-      const currency = countryCurrencyMap[countryCode] || Currency.USD; // Fallback to USD
-      setCurrency(currency);
-    }
-  }, [countryCode]);
+  const [currency, setCurrency] = useState("AE-0"); // Default currency
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency: updateCurrency }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency }}>
       {children}
     </CurrencyContext.Provider>
   );

@@ -12,7 +12,7 @@ interface PortfolioListResponse {
   currency_code:string;
 }
 const getPortfolioList = (countrycode:string): Promise<AxiosResponse<PortfolioListResponse>> =>
-  callWebService(`${getPortfolioListEndpoint.url}?countrycode=${countrycode}`, {
+  callWebService(`${getPortfolioListEndpoint.url}?countrycode=${countrycode.slice(0, 2)}&islocal=${countrycode.slice(3)}`, {
     method: getPortfolioListEndpoint.method,
     headers: {
       Authorization: `Bearer ${getToken()}`,

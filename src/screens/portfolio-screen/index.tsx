@@ -19,7 +19,7 @@ import {
   deletePortfoliouid,
 } from "@/local-storage";
 import { calculateGrowth } from "@/util";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 const PortfolioScreen: React.FC = () => {
   const { showLoader, hideLoader } = useContext(LoaderContext);
@@ -28,7 +28,7 @@ const PortfolioScreen: React.FC = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency; //reverseCountryCurrencyMap[currency];
   const [currencylocale, setCurrencyLocale] = useState<string>("");
   const [currencycode, seyCurrencycode] = useState<string>("");
 

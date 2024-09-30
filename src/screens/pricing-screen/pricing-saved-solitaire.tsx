@@ -14,7 +14,7 @@ import NotificationContext from "@/context/notification-context";
 import StonePrice from "@/interface/stone-price";
 import { getToken, setRedirectionRoute } from "@/local-storage";
 import { formatByCurrency } from "@/util";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 interface Props {
   children?: React.ReactNode;
@@ -32,7 +32,7 @@ const SavedSolitares: React.FC<Props> = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency;//reverseCountryCurrencyMap[currency];
 
   const fetchPrices = useCallback(async () => {
     showLoader();

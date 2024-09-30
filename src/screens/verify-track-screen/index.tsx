@@ -14,7 +14,7 @@ import { VerifyTrackContext } from "@/context/verify-track-context";
 //import useCountryCode from "@/hooks/use-country-code";
 import { deletePortfoliouid, getPortfoliouid } from "@/local-storage";
 //import { countryCurrencyMap } from "@/util/country-currency-map";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,7 +29,7 @@ export default function Track() {
   //const countrycode = useCountryCode();
 
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency;//reverseCountryCurrencyMap[currency];
   // const fetchImage = async (text: string): Promise<string | null> => {
   //   try {
   //     const imageUrl = await generateImage(text);

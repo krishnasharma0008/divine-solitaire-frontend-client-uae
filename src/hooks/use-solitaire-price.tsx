@@ -14,7 +14,7 @@ import { ClarityRound, ClarityRoundcarat } from "@/enum/clarity-enum";
 import { FancyShape } from "@/enum/shape-enum";
 import { ComparePrice } from "@/interface";
 import { getToken, setRedirectionRoute } from "@/local-storage";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 //import useCountryCode from "./use-country-code";
 
@@ -223,7 +223,7 @@ const useSolitairePrice = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency;//reverseCountryCurrencyMap[currency];
 
   // useEffect(() => {
   //   console.log("State Shape :", state.shape);

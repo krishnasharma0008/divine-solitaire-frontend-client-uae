@@ -19,7 +19,7 @@ import {
 //import useCountryCode from "@/hooks/use-country-code";
 import { useCurrency } from "@/context/currency-context";
 import { formatByCurrency } from "@/util";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 interface SPIPrice {
   Month: string;
@@ -59,7 +59,7 @@ const SolitairePriceIndexScreen: React.FC = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency;//reverseCountryCurrencyMap[currency];
 
   const toggleReadMoreLess = () => {
     setIsShowMore(!isShowMore);

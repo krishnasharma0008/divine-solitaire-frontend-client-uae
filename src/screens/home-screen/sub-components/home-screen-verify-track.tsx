@@ -6,7 +6,7 @@ import getVerifyTrackByUid from "@/api/verify-track";
 import { ArrowRightIcon, Button, InputText } from "@/components";
 //import useCountryCode from "@/hooks/use-country-code";
 import { useCurrency } from "@/context/currency-context";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map"; //
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map"; //
 
 const labels = [
   "Value of your diamond",
@@ -24,7 +24,7 @@ const HomeScreenVerifyTrack: React.FC = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  const countrycode = currency; //reverseCountryCurrencyMap[currency];
 
   const changeHandler = (fn: (str: string) => void) => (e: ChangeEvent) =>
     fn((e.target as HTMLInputElement).value);

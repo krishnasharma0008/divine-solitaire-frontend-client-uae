@@ -20,7 +20,7 @@ const INSURANCE_ITEMS = [
     icon: <SafetyIcon />,
     text: "FREE INSURANCE FOR 1 YEAR",
     link: {
-      text: "Read More",
+      //text: "Read More",
       href: "",
     },
   },
@@ -28,7 +28,7 @@ const INSURANCE_ITEMS = [
     icon: <EasyClaimProcessIcon />,
     text: "EASY CLAIM PROCESS",
     link: {
-      text: "Read More",
+      //text: "Read More",
       href: "",
     },
   },
@@ -37,7 +37,7 @@ const INSURANCE_ITEMS = [
     icon: <TermsConditionIcon />,
     text: "TERMS & CONDITIONS",
     link: {
-      text: "Read More",
+      //text: "Read More",
       href: "",
     },
   },
@@ -108,7 +108,7 @@ const VerifyTrackInsuranceSc: React.FC<VerifyTrackInsuranceScProps> = ({
                   {item.text}
                 </div>
                 <div className="font-montserrat not-italic font-normal text-xs leading-4 text-yellow-800 underline pt-1.5">
-                  <a href={item.link.href}>{item.link.text}</a>
+                  {/* <a href={item.link.href}>{item.link.text}</a> */}
                 </div>
               </div>
             </div>

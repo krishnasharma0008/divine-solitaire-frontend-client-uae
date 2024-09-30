@@ -11,7 +11,7 @@ import NotificationContext from "@/context/notification-context";
 //import useCountryCode from "@/hooks/use-country-code";
 import DiamondCoin from "@/interface/diamond-coin";
 import { formatByCurrency } from "@/util";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
 interface Props {
   children?: React.ReactNode;
@@ -28,7 +28,7 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
 
   //const countryCode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countryCode = reverseCountryCurrencyMap[currency];
+  const countryCode = currency;//reverseCountryCurrencyMap[currency];
 
   const fetchDiamondCoin = async (countryCode: string) => {
     showLoader();

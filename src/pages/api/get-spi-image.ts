@@ -6,7 +6,9 @@ import sharp from "sharp";
 
 import getSolitairePriceIndex from "@/api/spi";
 //import useCountryCode from "@/hooks/use-country-code";
+import { useCurrency } from "@/context/currency-context";
 import { SolitairePriceIndex } from "@/interface";
+
 
 const decline =
   '<path xmlns="http://www.w3.org/2000/svg" id="XMLID_10_" d="M154.394,325.606C157.322,328.536,161.161,330,165,330s7.678-1.464,10.607-4.394l37.5-37.5  c5.858-5.858,5.858-15.355,0-21.213c-5.858-5.858-15.356-5.858-21.213,0L180,278.787V15c0-8.284-6.716-15-15-15  c-8.284,0-15,6.716-15,15v263.787l-11.893-11.894c-5.858-5.858-15.356-5.858-21.213,0c-5.858,5.858-5.858,15.355,0,21.213  L154.394,325.606z"/>';
@@ -150,18 +152,18 @@ const createImage = async (
 
 
 
-const fetchCountryCode = async () => {
-  try {
-    const ipResponse = await fetch("https://api.ipify.org?format=json");
-    const { ip } = await ipResponse.json();
-    const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
-    const { country_code } = await locationResponse.json();
-    return country_code;
-  } catch (error) {
-    console.error("Error fetching country code:", error);
-    return null;
-  }
-};
+// const fetchCountryCode = async () => {
+//   try {
+//     const ipResponse = await fetch("https://api.ipify.org?format=json");
+//     const { ip } = await ipResponse.json();
+//     const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+//     const { country_code } = await locationResponse.json();
+//     return country_code;
+//   } catch (error) {
+//     console.error("Error fetching country code:", error);
+//     return null;
+//   }
+// };
 
 const getSpiImage = async (
   req: NextApiRequest,
@@ -171,7 +173,9 @@ const getSpiImage = async (
     const currentDate = new Date();
     const currentMonthNumber = `${currentDate.getMonth() + 1}`;
     const currentYear = currentDate.getFullYear();
-    const countrycode = await fetchCountryCode();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { currency } = useCurrency(); //
+    const countrycode = currency;//await fetchCountryCode();
 
     const result = await getSolitairePriceIndex(
       currentMonthNumber,

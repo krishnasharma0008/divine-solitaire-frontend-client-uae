@@ -29,7 +29,7 @@ const comparePastPrices = (
   countryCode: string
 ): Promise<AxiosResponse<ComparePastPricesResponse>> =>
   //callWebService(comparePastPricesEndpoint.url, {
-    callWebService(`${comparePastPricesEndpoint.url}?countrycode=${countryCode}`, {
+    callWebService(`${comparePastPricesEndpoint.url}?countrycode=${countryCode.slice(0, 2)}&islocal=${countryCode.slice(3)}}`, {
     method: comparePastPricesEndpoint.method,
     params
   });
@@ -51,7 +51,7 @@ const getStonePrice = (
   countryCode: string
 ): Promise<AxiosResponse<StonePriceResponse>> =>
   //callWebService(getStonePriceEndpoint.url, {
-    callWebService(`${getStonePriceEndpoint.url}?countrycode=${countryCode}`, {
+    callWebService(`${getStonePriceEndpoint.url}?countrycode=${countryCode.slice(0, 2)}&islocal=${countryCode.slice(3)}`, {
     method: getStonePriceEndpoint.method,
     params
   });
@@ -76,7 +76,9 @@ const saveSolitairePrice = (
       Authorization: `Bearer ${getToken()}`,
     },
     params: {
-      countryCode: countryCode // Assuming the parameter name is 'countryCode'
+      //countryCode: countryCode // Assuming the parameter name is 'countryCode'
+      countrycode :countryCode.slice(0, 2),
+      islocal :countryCode.slice(3)
     },
   });
 
@@ -92,7 +94,9 @@ const getSolitairePriceList = (countryCode: string): Promise<
       Authorization: `Bearer ${getToken()}`,
     },
     params: {
-      countrycode: countryCode // Assuming the parameter name is 'countryCode'
+      //countrycode: countryCode // Assuming the parameter name is 'countryCode'
+      countrycode :countryCode.slice(0, 2),
+      islocal :countryCode.slice(3)
     },
   });
 
@@ -106,7 +110,9 @@ const deleteSolitairePrice = (
       Authorization: `Bearer ${getToken()}`,
     },
     params: {
-      countryCode: countryCode // Assuming the parameter name is 'countryCode'
+      //countryCode: countryCode // Assuming the parameter name is 'countryCode'
+      countryCode :countryCode.slice(0, 2),
+      islocal :countryCode.slice(3)
     },
   });
 
@@ -118,7 +124,7 @@ const deleteSolitairePrice = (
 
   const getDiamondCoin = (countryCode: string): Promise<AxiosResponse<DiamondCoinResponse>> =>
     //callWebService(getDiamondCoinEndpoint.url, {
-    callWebService(`${getDiamondCoinEndpoint.url}?countrycode=${countryCode}`, {
+    callWebService(`${getDiamondCoinEndpoint.url}?countrycode=${countryCode.slice(0, 2)}&islocal=${countryCode.slice(3)}`, {
       method: getDiamondCoinEndpoint.method,
       //params
     });

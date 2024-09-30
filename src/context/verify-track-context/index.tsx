@@ -14,7 +14,7 @@ import getVerifyTrackByUid, {
 //import useCountryCode from "@/hooks/use-country-code";
 import { VerifyTrackByUid } from "@/interface";
 import { getToken } from "@/local-storage";
-import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";//
+//import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";//
 
 import { useCurrency } from "../currency-context";//
 import LoaderContext from "../loader-context";
@@ -67,7 +67,9 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = reverseCountryCurrencyMap[currency];
+  //const countrycode = reverseCountryCurrencyMap[currency];
+
+  const countrycode = currency;
 
   const setProductDetailsInContext = useCallback(
     (productDetails: VerifyTrackByUid) => setProductDetails(productDetails),

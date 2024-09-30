@@ -3,13 +3,13 @@ import React from "react";
 
 export interface DropdownProps
   extends Omit<SelectProps, "children" | "onChange"> {
-  options: Array<string>; // Array of options for the dropdown
+  //options: Array<string>; // Array of options for the dropdown
   value: string; // Current selected value
   onChange: (value: string) => void; // Function to handle change events
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
-  options,
+  //options,
   label,
   disabled,
   value,
@@ -32,11 +32,17 @@ const Dropdown: React.FC<DropdownProps> = ({
           }
         }}
       >
-        {options.map((item) => (
+        {/* {options.map((item) => (
           <Option key={item} value={item} style={{ listStyleType: "none" }}>
             {item}
           </Option>
-        ))}
+        ))} */}
+        <Option value="AE-0" style={{ listStyleType: "none" }}>
+          $ USD
+        </Option>
+        <Option value="AE-1" style={{ listStyleType: "none" }}>
+          د.إ AED
+        </Option>
       </Select>
     </div>
   );
