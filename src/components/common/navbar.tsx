@@ -212,7 +212,7 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
       </div>
 
       <div className="lg:w-1/3 flex justify-end gap-1 items-center">
-        <div className="relative w-20 h-10 rounded">
+        <div className="relative w-24 h-10 rounded">
           <Dropdown
             options={Object.values(Currency)}
             value={currency} // Correctly bind the selected value
