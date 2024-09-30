@@ -3,13 +3,12 @@ import Head from "next/head";
 import "../globals.css";
 import { ThemeProvider } from "@material-tailwind/react";
 import type { AppProps } from "next/app";
-// import { useRouter } from "next/router";
-// import { useContext, useEffect, useState } from "react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 import { URLs, breadcrumbList } from "@/constants";
 import { CurrencyProvider } from "@/context/currency-context";
-//import LoaderContext from "@/context/loader-context";
+import LoaderContext from "@/context/loader-context";
 import VerifyTrackContextWrapper from "@/context/verify-track-context";
 import {
   KnowYourDiamondContextWrapper,
@@ -31,37 +30,37 @@ const gtagScript = `
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [pageName, setPageName] = useState<URLs>(URLs.DASHBOARD);
 
-  // const { showLoader, hideLoader } = useContext(LoaderContext);
+  const { showLoader, hideLoader } = useContext(LoaderContext);
 
-  // const router = useRouter();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const handleRouteChange = (
-  //     url: string,
-  //     { shallow }: { shallow: boolean }
-  //   ) => {
-  //     console.log(
-  //       `App is changing to ${url} ${
-  //         shallow ? "with" : "without"
-  //       } shallow routing`
-  //     );
-  //     showLoader();
-  //   };
+  useEffect(() => {
+    const handleRouteChange = (
+      url: string,
+      { shallow }: { shallow: boolean }
+    ) => {
+      console.log(
+        `App is changing to ${url} ${
+          shallow ? "with" : "without"
+        } shallow routing`
+      );
+      showLoader();
+    };
 
-  //   const handleRouteComplete = () => {
-  //     console.log("you have finished going to the new page");
-  //     hideLoader();
-  //   };
+    const handleRouteComplete = () => {
+      console.log("you have finished going to the new page");
+      hideLoader();
+    };
 
-  //   router.events.on("routeChangeStart", handleRouteChange);
-  //   router.events.on("routeChangeComplete", handleRouteComplete);
+    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteComplete);
 
-  //   // If the component is unmounted, unsubscribe from the event with the `off` method:
-  //   return () => {
-  //     router.events.off("routeChangeStart", handleRouteChange);
-  //     router.events.off("routeChangeComplete", handleRouteComplete);
-  //   };
-  // }, [router.events, showLoader, hideLoader]);
+    // If the component is unmounted, unsubscribe from the event with the `off` method:
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteComplete);
+    };
+  }, [router.events, showLoader, hideLoader]);
 
   return (
     <>
