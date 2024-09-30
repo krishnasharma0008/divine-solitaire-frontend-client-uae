@@ -1,5 +1,5 @@
 enum Currency {
-    INR = "₹ INR",
+    //INR = "₹ INR",
     USD = "$ USD",
     AED = "د.إ AED",
   }
