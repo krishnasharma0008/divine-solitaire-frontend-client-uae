@@ -1,13 +1,12 @@
 import Image from "next/image";
 
-import {
-  HomeScreenSolitaireEveryMoment,
-  // HomeScreenSolitaireCraftedCharm,
-  // HomeScreenDiamondStory,
-  // HomeScreenYourDiamondValue,
-  // HomeScreenFeatureSection,
-  // HomeScreenSocialWidget,
-} from "./sub-components";
+import //HomeScreenSolitaireEveryMoment,
+// HomeScreenSolitaireCraftedCharm,
+// HomeScreenDiamondStory,
+// HomeScreenYourDiamondValue,
+// HomeScreenFeatureSection,
+// HomeScreenSocialWidget,
+"./sub-components";
 
 const HomepageScreen: React.FC = () => (
   <div className="">
@@ -53,7 +52,7 @@ const HomepageScreen: React.FC = () => (
 
     {/* <div className="xl:max-w-5xl 2xl:max-w-6xl m-auto"> */}
     <div className="m-auto">
-      <HomeScreenSolitaireEveryMoment />
+      {/* <HomeScreenSolitaireEveryMoment /> */}
       {/* <HomeScreenSolitaireCraftedCharm />
       <HomeScreenDiamondStory />
       <HomeScreenYourDiamondValue />
