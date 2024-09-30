@@ -60,7 +60,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       router.events.off("routeChangeStart", handleRouteChange);
       router.events.off("routeChangeComplete", handleRouteComplete);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <>
