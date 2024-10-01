@@ -17,11 +17,11 @@ const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   // Render the dropdown component
   return (
-    <div className="mb-4 [&>div>ul]:my-0 [&>div>ul>li]:!text-black [&>div>button]:!border-black [&>div]:min-w-0">
+    <div className="sm:mb-4 [&>div>ul]:my-0 [&>div>ul>li]:!text-black [&>div>button]:!border-black [&>div]:min-w-0 sm:[&>div]:h-[2.6rem] [&>div]:h-[1.5rem]">
       <Select
         label={label}
         className="border rounded bg-white [&+label]:inset-0 [&>span]:px-2 [&>span]:!pt-0 !border-blue-gray-200 [&+label]:!text-black"
-        style={{ minWidth: 0 }}
+        //style={{ minWidth: 0 }}
         color="gray"
         disabled={disabled}
         variant="static"
@@ -37,12 +37,17 @@ const Dropdown: React.FC<DropdownProps> = ({
             {item}
           </Option>
         ))} */}
-        <Option value="AE-0" style={{ listStyleType: "none" }}>
+        <Option
+          value="AE-0"
+          style={{ listStyleType: "none", whiteSpace: "nowrap" }}
+          className="text-xs font-light leading-5 mb-1"
+        >
           $ USD
         </Option>
         <Option
           value="AE-1"
           style={{ listStyleType: "none", whiteSpace: "nowrap" }}
+          className="text-xs font-light leading-5"
         >
           د.إ AED
         </Option>

@@ -113,17 +113,55 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
   //   hideLoader();
   // };
 
+  // const updateProductDetails = async (force = false) => {
+  //   //console.log("verifytrack context", countrycode);
+  //   showLoader();
+
+  //   try {
+  //     if (countrycode && query.uid && !Array.isArray(query.uid)) {
+  //       // Only fetch data if force is true or productDetails is missing
+  //       if (!productDetails || force) {
+  //         const { data } = await getVerifyTrackByUid(query.uid, countrycode);
+
+  //         // Only update productDetails if it has actually changed to avoid unnecessary re-renders
+  //         if (JSON.stringify(productDetails) !== JSON.stringify(data.data)) {
+  //           setProductDetails(data.data);
+  //         }
+
+  //         const isWishlist = data.data.uid_status === "UNSOLD";
+  //         setIsWishlist(isWishlist);
+
+  //         // Update wishlist or portfolio status based on current token and product status
+  //         if (getToken()) {
+  //           const currentStatus = isWishlist
+  //             ? await getProductWishlistStatus(query.uid)
+  //             : await getProductPortfolioStatus(query.uid);
+
+  //           const status =
+  //             currentStatus.data.data?.uid === query.uid.toUpperCase();
+  //           if (isAdded !== status) {
+  //             setIsAdded(status);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log("Something went wrong: VerifyTrackSection", err);
+  //   }
+
+  //   hideLoader();
+  // };
+
   const updateProductDetails = async (force = false) => {
-    //console.log("verifytrack context", countrycode);
-    showLoader();
+    showLoader(); // Show the loader before the fetch
 
     try {
+      // Ensure we have a valid countrycode and query.uid to fetch data
       if (countrycode && query.uid && !Array.isArray(query.uid)) {
-        // Only fetch data if force is true or productDetails is missing
+        // Check if force is true or productDetails is missing
         if (!productDetails || force) {
           const { data } = await getVerifyTrackByUid(query.uid, countrycode);
 
-          // Only update productDetails if it has actually changed to avoid unnecessary re-renders
           if (JSON.stringify(productDetails) !== JSON.stringify(data.data)) {
             setProductDetails(data.data);
           }
@@ -131,7 +169,6 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
           const isWishlist = data.data.uid_status === "UNSOLD";
           setIsWishlist(isWishlist);
 
-          // Update wishlist or portfolio status based on current token and product status
           if (getToken()) {
             const currentStatus = isWishlist
               ? await getProductWishlistStatus(query.uid)
@@ -149,18 +186,20 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
       console.log("Something went wrong: VerifyTrackSection", err);
     }
 
-    hideLoader();
+    hideLoader(); // Hide the loader after the fetch
   };
 
   useEffect(() => {
-    console.log("verifytrack context", countrycode);
-    //updateProductDetails(true);
-    if (!productDetails || query.uid) {
-      // Only force update if product details are not set or if the countrycode changes
-      updateProductDetails(true);
+    if (countrycode && query.uid && typeof query.uid === "string") {
+      updateProductDetails(true); // force refetch if countrycode or query.uid changes
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countrycode, query.uid]);
+
+  // useEffect(() => {
+  //   if (!productDetails && query.uid) {
+  //     updateProductDetails(true);
+  //   }
+  // }, [countrycode, query.uid]); // Only depend on countrycode and query.uid
 
   return (
     <VerifyTrackContext.Provider
