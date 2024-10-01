@@ -40,7 +40,10 @@ const Dropdown: React.FC<DropdownProps> = ({
         <Option value="AE-0" style={{ listStyleType: "none" }}>
           $ USD
         </Option>
-        <Option value="AE-1" style={{ listStyleType: "none" }}>
+        <Option
+          value="AE-1"
+          style={{ listStyleType: "none", whiteSpace: "nowrap" }}
+        >
           د.إ AED
         </Option>
       </Select>
