@@ -29,7 +29,7 @@ export default function Track() {
   //const countrycode = useCountryCode();
 
   const { currency } = useCurrency(); //for currency
-  const countrycode = currency;//reverseCountryCurrencyMap[currency];
+  const countrycode = currency; //reverseCountryCurrencyMap[currency];
   // const fetchImage = async (text: string): Promise<string | null> => {
   //   try {
   //     const imageUrl = await generateImage(text);
@@ -48,9 +48,6 @@ export default function Track() {
     e.preventDefault();
     e.stopPropagation();
 
-    //const imageUrl = "/api/add-text-image?text="+ uid +"&imagePath=/vtdia/carousel_3.png";
-    //console.log(imageUrl);
-    // SearchData(uid, "no", imageUrl || undefined);
     SearchData(uid, "no");
   };
 
@@ -61,25 +58,10 @@ export default function Track() {
   ) => {
     try {
       showLoader();
-      //console.log("currency", currency);
-      //console.log("countryCode", reverseCountryCurrencyMap[currency]);
+
       const res = await getVerifyTrackByUid(UID, countrycode as string);
-      //console.log(res.data.data);
+
       if (res.data.data) {
-        // if (res.data.data.product_type === "Diamond") {
-        //   //   // if (!imageUrl) {
-        //   //   //   imageUrl = (await fetchImage(UID)) || ""; // Provide a default value
-        //   //   // }
-        //   res.data.data.images = [
-        //     "/vtdia/carousel_1.png",
-        //     "/vtdia/carousel_2.png",
-        //     "/api/add-text-image?text=" +
-        //       UID +
-        //       "&imagePath=/vtdia/carousel_3.png",
-        //     "/vtdia/carousel_4.png",
-        //   ];
-        // }
-        // console.log(res.data.data);
         setProductDetails(res.data.data);
         if (portfolio === "yes") {
           console.log(
