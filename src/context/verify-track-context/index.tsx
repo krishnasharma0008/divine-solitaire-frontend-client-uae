@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -70,6 +71,7 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
   //const countrycode = reverseCountryCurrencyMap[currency];
 
   const countrycode = currency;
+  const prevCurrencyRef = useRef<string | null>(null);
 
   const setProductDetailsInContext = useCallback(
     (productDetails: VerifyTrackByUid) => setProductDetails(productDetails),
@@ -190,16 +192,26 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
   };
 
   useEffect(() => {
-    if (countrycode && query.uid && typeof query.uid === "string") {
-      updateProductDetails(true); // force refetch if countrycode or query.uid changes
-    }
-  }, [countrycode, query.uid]);
+    let chk = 0; // Declare the counter
+    const prevCurrency = prevCurrencyRef.current;
 
-  // useEffect(() => {
-  //   if (!productDetails && query.uid) {
-  //     updateProductDetails(true);
-  //   }
-  // }, [countrycode, query.uid]); // Only depend on countrycode and query.uid
+    // Check if currency has changed
+    if (prevCurrency !== null && prevCurrency !== currency) {
+      //console.log(`Currency has changed from ${prevCurrency} to ${currency}`);
+      chk += 1; // Increment the counter
+    }
+
+    // Log query.number
+    //console.log("query.number", chk);
+
+    // Only call updateProductDetails if chk is greater than 0, countrycode is valid, and uid is a string
+    if (chk > 0 && countrycode && query.uid && typeof query.uid === "string") {
+      updateProductDetails(true); // Force refetch if conditions are met
+    }
+
+    // Update the ref to the current currency
+    prevCurrencyRef.current = currency;
+  }, [currency, countrycode, query.uid]);
 
   return (
     <VerifyTrackContext.Provider
