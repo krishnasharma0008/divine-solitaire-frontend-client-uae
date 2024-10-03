@@ -198,7 +198,7 @@ const Footer: React.FC = () => {
             </div>
             <div className="pt-[50px]">
               <div className="w-full flex space-x-4">
-                <span>Copyright © 2023 Divine Solitaires</span>
+                <span>Copyright © 2024 Divine Solitaires</span>
               </div>
             </div>
           </div>

@@ -188,7 +188,7 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
       </div>
 
       <div className="lg:w-1/3 flex justify-end gap-1 items-center">
-        <div className="relative sm:w-24 w-20 sm:h-10 rounded">
+        <div className="relative sm:w-24 w-20 sm:min-w-[97px] min-w-20 sm:h-10 rounded mr-2">
           <Dropdown
             //options={Object.values(Currency)}
             value={currency} // Correctly bind the selected value
@@ -197,11 +197,12 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
             //className="w-52"
           />
         </div>
-        <div className="hidden relative lg:block">
+        <div className="hidden relative lg:block lg:flex lg:w-auto w-full">
           <Link href="/store-locator" className="inline-block">
             <Button
               themeType="dark"
-              classes="h-10 text-xs font-light leading-5 max-w-[12rem] tracking-widest hover:bg-white hover:text-black [&:hover>span>svg]:fill-white [&:hover>span>svg>g>path]:stroke-black hover:border-none"
+              //classes="h-10 text-xs font-light leading-5 max-w-[12rem] tracking-widest hover:bg-white hover:text-black [&:hover>span>svg]:fill-white [&:hover>span>svg>g>path]:stroke-black hover:border-none"
+              classes="h-10 text-xs font-light leading-5 max-w-[12rem] tracking-widest hover:bg-white hover:text-black shadow-none whitespace-nowrap"
             >
               STORE LOCATOR
               <span className="inline-block align-middle float-right"></span>
@@ -210,11 +211,11 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
           <Link
             href={"https://shop.divinesolitaires.com"}
             target="_blank"
-            className="inline-block mx-2"
+            className="inline-block ml-2"
           >
             <Button
               themeType="light"
-              classes="h-10 basis-40 text-xs font-light leading-5 tracking-widest border-solid border-black hover:text-white hover:bg-black hover:!border-white hover:border-solid"
+              classes="h-10 basis-40 text-xs font-light leading-5 tracking-widest border-solid border-black hover:text-white hover:bg-black hover:!border-white hover:border-solid whitespace-nowrap"
             >
               <span className="hidden md:inline">SHOP NOW</span>
             </Button>
@@ -234,7 +235,10 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
           // User is logged in, show dropdown menu
           <Menu>
             <MenuHandler>
-              <IconButton variant="text" className="relative cursor-pointer">
+              <IconButton
+                variant="text"
+                className="min-w-[24px] relative cursor-pointer"
+              >
                 <UserIcon />
               </IconButton>
             </MenuHandler>
@@ -282,7 +286,10 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
           </Menu>
         ) : (
           // User is not logged in, show login link
-          <Link className="relative cursor-pointer" href={"/login"}>
+          <Link
+            className="min-w-[24px] mr-2 relative cursor-pointer"
+            href={"/login"}
+          >
             <UserIcon />
           </Link>
         )}
