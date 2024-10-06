@@ -24,7 +24,6 @@ import Button from "./button";
 import Dropdown from "./dropdown";
 import Sidebar, { SidebarProps } from "./sidebar";
 import {
-  //EmptySpaceIcon,
   ShoppingCartIcon,
   StoreLocatorIcon,
   UserIcon,
@@ -81,14 +80,12 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
       {
         title: "Solitaire Price Index",
         url: URLs.SOLITAIRE_PRICE_INDEX,
-        //icon: EmptySpaceIcon,
         icon: "yes",
         name: URLs.SOLITAIRE_PRICE_INDEX,
       },
       {
         title: "My Portfolio",
         url: URLs.CREATE_PORTFOLIO,
-        //icon: EmptySpaceIcon,
         icon: "no",
         name: URLs.CREATE_PORTFOLIO,
       },
@@ -137,27 +134,15 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
       {
         title: "Jewellery",
         url: URLs.JEWELLERY,
-        //icon: EmptySpaceIcon,
         icon: "yes",
         name: URLs.JEWELLERY,
       },
       {
         title: "Blogs",
         url: URLs.BLOGS,
-        //icon: EmptySpaceIcon,
         icon: "no",
         name: URLs.BLOGS,
       },
-      // {
-      //   title: "Log Out",
-      //   url: URLs.DASHBOARD,
-      //   //icon: SignOutIcon,
-      //   icon: "no",
-      //   onClick: () => {
-      //     deleteToken();
-      //   },
-      //   name: URLs.DASHBOARD,
-      // },
     ],
     isSidebarOpen: isSidebarOpen,
     setSidebarOpen: setSidebarOpen,

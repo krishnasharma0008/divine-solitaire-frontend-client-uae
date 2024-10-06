@@ -87,7 +87,14 @@ const CaratCalculator: React.FC<CaratCalculator> = ({
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && onChange) {
       const value = parseFloat(caratValue);
-      setCaratValue(onChange(value).toString());
+      //setCaratValue(onChange(value).toString());
+      if (!isNaN(value)) {
+        // Call the onChange handler and update caratValue
+        setCaratValue(onChange(value).toString());
+
+        // Remove focus after Enter key is pressed
+        (e.target as HTMLInputElement).blur();
+      }
     }
 
     // Prevent default action for arrow keys
