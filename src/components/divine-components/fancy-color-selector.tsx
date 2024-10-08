@@ -33,11 +33,15 @@ const ColourOptionsSelector: React.FC<OptionsProps> = ({
     }
   };
 
+  // useEffect(() => {
+  //   const selectedIndex = options.findIndex((i) => i === selectedVal);
+  //   setSelected(selectedIndex);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selected]);
   useEffect(() => {
-    const selectedIndex = options.findIndex((i) => i === selectedVal);
-    setSelected(selectedIndex);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected]);
+    const selectedIndex = options.findIndex((option) => option === selectedVal);
+    setSelected(selectedIndex !== -1 ? selectedIndex : defaultValue);
+  }, [selectedVal, options, defaultValue]); // Depend on selectedVal, options, and defaultValue
 
   return (
     <div className={`w-full mb-6 ${className}`}>

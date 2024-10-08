@@ -80,6 +80,8 @@ const SelectYourSolitaire: React.FC = () => {
   } = useSolitairePrice();
 
   useEffect(() => {
+    // console.log("check clarity state :", state.clarity);
+    // console.log("check colour state :", state.colour);
     if (selectedKyd) {
       //console.log("check :", selectedKyd.colour);
       changeHandler("clarity")(selectedKyd.purity);
@@ -89,7 +91,7 @@ const SelectYourSolitaire: React.FC = () => {
       setSelectedKyd(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedKyd]);
+  }, [selectedKyd, state]);
 
   return (
     <>
