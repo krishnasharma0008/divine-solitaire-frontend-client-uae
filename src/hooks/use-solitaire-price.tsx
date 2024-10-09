@@ -195,10 +195,16 @@ const useSolitairePrice = () => {
         console.log("1");
         if (value >= 0.1 && value <= 0.17) {
           console.log("2");
-          return otherRoundColorsCarat[0] as Colour;
+          if (!otherRoundColorsCarat.includes(state.colour)) {
+            return otherRoundColorsCarat[0] as Colour;
+          }
+          //return otherRoundColorsCarat[0] as Colour;
         } else {
           console.log("3");
-          return otherShapeColors[0] as Colour;
+          if (!otherShapeColors.includes(state.colour)) {
+            return otherShapeColors[0] as Colour;
+          }
+          //return otherShapeColors[0] as Colour;
         }
       }
       // else if (!otherShapeColors.includes(state.colour)) {
@@ -227,10 +233,16 @@ const useSolitairePrice = () => {
           }
         }
       } else if (value >= 0.1 && value <= 0.17) {
-        return claritiesRoundCarat[0];
+        //return claritiesRoundCarat[0];
+        if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
+          return claritiesRoundCarat[0];
+        }
       } //if (!otherShapeClarity.includes(state.clarity as Clarity)) {
       else {
-        return otherShapeClarity[0];
+        //return otherShapeClarity[0];
+        if (!otherShapeClarity.includes(state.clarity as Clarity)) {
+          return otherShapeClarity[0];
+        }
       }
     } else if (shapeType === "VDF" || shapeType === "INY") {
       //return claritiesRoundCarat[0];
@@ -326,7 +338,7 @@ const useSolitairePrice = () => {
   };
 
   useEffect(() => {
-    console.log("State changed:", JSON.stringify(state));
+    //console.log("State changed:", JSON.stringify(state));
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, countrycode]);
@@ -403,7 +415,7 @@ const useSolitairePrice = () => {
   };
 
   const changeHandler = (type: string) => (value: number | string) => {
-    //console.log("Type : ", type, "Value :", value);
+    console.log("Type : ", type, "Value :", value);
 
     if (type === "colour") {
       const stype = value === "VDF" || value === "INY" ? value : "regular";
@@ -473,8 +485,9 @@ const useSolitairePrice = () => {
         return value < 0.1 ? 0.1 : 1.23;
       }
     } else if (
-      shapeType === "VDF" ||
-      (shapeType === "INY" && (value < 0.18 || value > 1.5))
+      (shapeType === "VDF" || shapeType === "INY") &&
+      (value < 0.18 || value > 1.5)
+      //value >= 0.1 && value <= 0.17
     ) {
       setShowValidationMessage("The size should be between 0.18 and 1.5 carat");
       return value < 0.18 ? 0.18 : 1.5;
@@ -483,7 +496,7 @@ const useSolitairePrice = () => {
   };
 
   const caratChangeHandler = (value: number): number => {
-    //console.log("value", value);
+    console.log("value", value);
     const newVal = calculateValueAndChangeHandler(value);
     dispatch({
       type: "roundChange",
