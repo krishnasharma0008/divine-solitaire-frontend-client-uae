@@ -77,6 +77,7 @@ const SelectYourSolitaire: React.FC = () => {
     clarityOptions,
     colorOptions,
     shapeType,
+    //handleReset,
   } = useSolitairePrice();
 
   useEffect(() => {
@@ -103,6 +104,9 @@ const SelectYourSolitaire: React.FC = () => {
       />
       <div className="w-full hidden md:flex justify-between">
         <div className="flex flex-col w-1/2">
+          {/* <Button themeType="light" onClick={handleReset}>
+            Clear Selection
+          </Button> */}
           <ShapeSelector
             onSelect={changeHandler("shape")}
             defaultValue={0}
@@ -140,9 +144,6 @@ const SelectYourSolitaire: React.FC = () => {
             premium_f_cts={premiumfcts}
             premium_t_cts={premiumtcts}
           />
-          {/* <Button themeType="light" onClick={clearSelection}>
-            Clear Selection
-          </Button> */}
           <ColorSelector
             onSelect={changeHandler("colour")}
             defaultValue={0}

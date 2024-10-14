@@ -74,6 +74,8 @@ const comparePriceReducer = (
       };
     case "shape":
       return { ...state, shape: action.payload as Shape };
+    case "RESET":
+      return { ...initialState }; // Reset to the initial state
     default:
       return { ...state, [action.type]: action.payload };
   }
@@ -217,15 +219,82 @@ const useSolitairePrice = () => {
     return state.colour;
   };
 
+  // const getValidClarityValue = (
+  //   value: number
+  // ): Clarity | ClarityRound | ClarityRoundcarat => {
+  //   console.log("check Clarity state :", state.clarity);
+  //   if (shapeType === "regular") {
+  //     const otherShapeClarity = clarities.slice(0, 5);
+
+  //     if (state.shape === Shape.ROUND) {
+  //       if (value < 0.18) {
+  //         if (!claritiesRound.includes(state.clarity as ClarityRound)) {
+  //           return claritiesRound[0];
+  //         } else if (!clarities.includes(state.clarity as Clarity)) {
+  //           return clarities[0];
+  //         }
+  //       }
+  //     } else if (value >= 0.1 && value <= 0.17) {
+  //       //return claritiesRoundCarat[0];
+  //       if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
+  //         return claritiesRoundCarat[0];
+  //       }
+  //     } //if (!otherShapeClarity.includes(state.clarity as Clarity)) {
+  //     else {
+  //       //return otherShapeClarity[0];
+  //       if (!otherShapeClarity.includes(state.clarity as Clarity)) {
+  //         return otherShapeClarity[0];
+  //       }
+  //     }
+  //   } else if (shapeType === "VDF" || shapeType === "INY") {
+  //     //return claritiesRoundCarat[0];
+  //     if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
+  //       return claritiesRoundCarat[0];
+  //     }
+  //   }
+  //   // if (shapeType === "regular") {
+  //   //   if (isRound) {
+  //   //     if (value < 0.18) {
+  //   //       return claritiesRound[0];
+  //   //     } else {
+  //   //       return clarities[0];
+  //   //     }
+  //   //   } else {
+  //   //     if (value >= 0.1 && value <= 0.17) {
+  //   //       console.log("C1");
+  //   //       return claritiesRoundCarat[0];
+  //   //     } else {
+  //   //       console.log("C2");
+
+  //   //       const otherShapeClarity = clarities.slice(0, 5);
+  //   //       console.log("Sliced Clarities: ", otherShapeClarity[0]);
+  //   //       return otherShapeClarity[0];
+  //   //     }
+  //   //   }
+  //   //   //} else {
+  //   //   //  return claritiesRoundCarat[0];
+  //   //   //}
+  //   // } else if (shapeType === "VDF" || shapeType === "INY") {
+  //   //   //return claritiesRoundCarat[0];
+  //   //   if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
+  //   //     return claritiesRoundCarat[0];
+  //   //   }
+  //   // }
+  //   return state.clarity;
+  // };
   const getValidClarityValue = (
     value: number
   ): Clarity | ClarityRound | ClarityRoundcarat => {
-    //console.log("check Clarity");
+    //console.log("check Clarity state:", state.clarity);
+
+    // For "regular" shapes
     if (shapeType === "regular") {
       const otherShapeClarity = clarities.slice(0, 5);
 
+      // For round shapes with specific conditions
       if (state.shape === Shape.ROUND) {
         if (value < 0.18) {
+          // Ensure clarity is valid within ClarityRound or Clarity arrays
           if (!claritiesRound.includes(state.clarity as ClarityRound)) {
             return claritiesRound[0];
           } else if (!clarities.includes(state.clarity as Clarity)) {
@@ -233,51 +302,27 @@ const useSolitairePrice = () => {
           }
         }
       } else if (value >= 0.1 && value <= 0.17) {
-        //return claritiesRoundCarat[0];
+        // Ensure clarity is valid within ClarityRoundcarat
         if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
           return claritiesRoundCarat[0];
         }
-      } //if (!otherShapeClarity.includes(state.clarity as Clarity)) {
-      else {
-        //return otherShapeClarity[0];
+      } else {
+        // For other shapes in the "regular" category, fallback to first otherShapeClarity
         if (!otherShapeClarity.includes(state.clarity as Clarity)) {
           return otherShapeClarity[0];
         }
       }
-    } else if (shapeType === "VDF" || shapeType === "INY") {
-      //return claritiesRoundCarat[0];
+    }
+
+    // For "VDF" or "INY" shapes
+    if (shapeType === "VDF" || shapeType === "INY") {
+      // Ensure clarity is valid within ClarityRoundcarat
       if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
         return claritiesRoundCarat[0];
       }
     }
-    // if (shapeType === "regular") {
-    //   if (isRound) {
-    //     if (value < 0.18) {
-    //       return claritiesRound[0];
-    //     } else {
-    //       return clarities[0];
-    //     }
-    //   } else {
-    //     if (value >= 0.1 && value <= 0.17) {
-    //       console.log("C1");
-    //       return claritiesRoundCarat[0];
-    //     } else {
-    //       console.log("C2");
 
-    //       const otherShapeClarity = clarities.slice(0, 5);
-    //       console.log("Sliced Clarities: ", otherShapeClarity[0]);
-    //       return otherShapeClarity[0];
-    //     }
-    //   }
-    //   //} else {
-    //   //  return claritiesRoundCarat[0];
-    //   //}
-    // } else if (shapeType === "VDF" || shapeType === "INY") {
-    //   //return claritiesRoundCarat[0];
-    //   if (!claritiesRoundCarat.includes(state.clarity as ClarityRoundcarat)) {
-    //     return claritiesRoundCarat[0];
-    //   }
-    // }
+    // Default return the current state's clarity if all conditions pass
     return state.clarity;
   };
 
@@ -415,7 +460,7 @@ const useSolitairePrice = () => {
   };
 
   const changeHandler = (type: string) => (value: number | string) => {
-    console.log("Type : ", type, "Value :", value);
+    //console.log("Type : ", type, "Value :", value);
 
     if (type === "colour") {
       const stype = value === "VDF" || value === "INY" ? value : "regular";
@@ -428,13 +473,13 @@ const useSolitairePrice = () => {
             //shape: stype === "regular" ? Shape.ROUND : FancyShape.RADIANT,
             shape: stype === "regular" ? state.shape : FancyShape.RADIANT,
             colour: value,
-            //clarity: getValidClarityValue(state.cts),
-            clarity:
-              stype === "regular"
-                ? state.shape === Shape.ROUND
-                  ? getValidClarityValue(state.cts)
-                  : "IF"
-                : "VVS",
+            clarity: getValidClarityValue(state.cts),
+            // clarity:
+            //   stype === "regular"
+            //     ? state.shape === Shape.ROUND
+            //       ? getValidClarityValue(state.cts)
+            //       : "IF"
+            //     : "VVS",
             cts: 0.18,
           } as unknown as ComparePrice,
         });
@@ -447,6 +492,7 @@ const useSolitairePrice = () => {
 
   useEffect(() => {
     //console.log("shapeType has changed:", shapeType);
+    //console.log("State changed:", JSON.stringify(state));
   }, [shapeType]);
 
   // useEffect(() => {
@@ -525,6 +571,11 @@ const useSolitairePrice = () => {
   //   }
   // };
 
+  //reset button
+  const handleReset = () => {
+    dispatch({ type: "RESET" }); // Dispatch the reset action
+  };
+
   const onClickSaveSolitaire = async () => {
     try {
       if (!getToken()) {
@@ -583,6 +634,7 @@ const useSolitairePrice = () => {
     colorOptions,
     clarityOptions,
     shapeType,
+    handleReset,
   };
 };
 
