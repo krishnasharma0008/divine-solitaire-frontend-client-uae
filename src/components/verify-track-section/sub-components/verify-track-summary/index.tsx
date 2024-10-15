@@ -57,9 +57,10 @@ const VerifyTrackSummary: React.FC = () => {
       setShowLogin(true);
       hideLoader();
       return;
-    } else {
-      setOpenInsureNow(true);
     }
+    // If logged in, show the insurance modal
+    setOpenInsureNow(true);
+    hideLoader();
   };
 
   useEffect(() => {
