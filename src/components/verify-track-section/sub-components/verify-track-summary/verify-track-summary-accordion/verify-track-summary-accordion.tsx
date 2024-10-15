@@ -57,14 +57,24 @@ const VerifyTrackSummaryAccordion: React.FC<
               {!title.isCoin && title.uid_status === "SOLD" && (
                 <div className="flex flex-row justify-between text-base font-normal">
                   <div>
-                    <div>Purchase Price:</div>
-                    <div>
-                      {formatByCurrency(
-                        title.purchasePrice,
-                        title.currency_locale,
-                        title.currency_code
-                      )}
-                    </div>
+                    {title.main === "Divine Mount" ? (
+                      <>
+                        <div>Purchase Price: </div>
+                        <div>
+                          {formatByCurrency(
+                            title.purchasePrice,
+                            title.currency_locale,
+                            title.currency_code
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div></div>
+                        <div></div>
+                      </>
+                    )}
+                    {/*  */}
                   </div>
                   <div>
                     <div>Current Price:</div>
