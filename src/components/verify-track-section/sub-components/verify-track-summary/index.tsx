@@ -49,7 +49,18 @@ const VerifyTrackSummary: React.FC = () => {
   const { showLoader, hideLoader } = useContext(LoaderContext);
   const { notify, notifyErr } = useContext(NotificationContext);
 
-  const handleOpenInsurance = () => setOpenInsureNow(true);
+  //const handleOpenInsurance = () => setOpenInsureNow(true);
+  const handleOpenInsurance = () => {
+    showLoader();
+    // Show the login modal when button is clicked
+    if (!getToken()) {
+      setShowLogin(true);
+      hideLoader();
+      return;
+    } else {
+      setOpenInsureNow(true);
+    }
+  };
 
   useEffect(() => {
     const body = document.querySelector("body");
@@ -146,7 +157,7 @@ const VerifyTrackSummary: React.FC = () => {
 
   //console.log("Image Gallery :", imageGalleryImages);
 
-   const validVideoURLs = productDetails.videos?.filter(isValidURL) || [];
+  const validVideoURLs = productDetails.videos?.filter(isValidURL) || [];
   // if (validVideoURLs.length > 0) {
   //   imageGalleryImages.unshift({
   //     url: validVideoURLs[0],
