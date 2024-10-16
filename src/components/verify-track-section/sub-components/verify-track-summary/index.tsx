@@ -63,6 +63,7 @@ const VerifyTrackSummary: React.FC = () => {
     hideLoader();
   };
 
+  
   useEffect(() => {
     const body = document.querySelector("body");
     if (body) {
@@ -72,6 +73,15 @@ const VerifyTrackSummary: React.FC = () => {
       } else {
         body.className =
           document.querySelector("body")?.className.replace("hide", "") || "";
+      }
+    }
+
+    const postLoginAction = sessionStorage.getItem("postLoginAction");
+
+    if (getToken()) {
+      if (postLoginAction === "openInsurance") {
+        setOpenInsureNow(true); // Execute the stored action
+        sessionStorage.removeItem("postLoginAction"); // Clear the action after execution
       }
     }
 

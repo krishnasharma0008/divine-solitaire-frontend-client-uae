@@ -154,64 +154,94 @@ const VerifyTrackContextWrapper: React.FC<VerifyTrackContextWrapperProps> = ({
   //   hideLoader();
   // };
 
-  const updateProductDetails = async (force = false) => {
-    showLoader(); // Show the loader before the fetch
+  const updateProductDetails = useCallback(
+    async (force = false) => {
+      if (!force && productDetails) {
+        return; // Skip fetching if we already have data and force is false
+      }
 
-    try {
-      // Ensure we have a valid countrycode and query.uid to fetch data
-      if (countrycode && query.uid && !Array.isArray(query.uid)) {
-        // Check if force is true or productDetails is missing
-        if (!productDetails || force) {
+      showLoader(); // Show loader before fetching
+      try {
+        if (countrycode && query.uid && typeof query.uid === "string") {
           const { data } = await getVerifyTrackByUid(query.uid, countrycode);
+          const newDetails = data.data;
 
-          if (JSON.stringify(productDetails) !== JSON.stringify(data.data)) {
-            setProductDetails(data.data);
-          }
+          // Only update if the product details are different
+          if (JSON.stringify(productDetails) !== JSON.stringify(newDetails)) {
+            setProductDetails(newDetails);
+            setIsWishlist(newDetails.uid_status === "UNSOLD");
 
-          const isWishlist = data.data.uid_status === "UNSOLD";
-          setIsWishlist(isWishlist);
+            if (getToken()) {
+              const currentStatus =
+                newDetails.uid_status === "UNSOLD"
+                  ? await getProductWishlistStatus(query.uid)
+                  : await getProductPortfolioStatus(query.uid);
 
-          if (getToken()) {
-            const currentStatus = isWishlist
-              ? await getProductWishlistStatus(query.uid)
-              : await getProductPortfolioStatus(query.uid);
-
-            const status =
-              currentStatus.data.data?.uid === query.uid.toUpperCase();
-            if (isAdded !== status) {
-              setIsAdded(status);
+              setIsAdded(
+                currentStatus.data.data?.uid === query.uid.toUpperCase()
+              );
             }
           }
         }
+      } catch (err) {
+        console.error("Failed to update product details:", err);
+      } finally {
+        hideLoader(); // Hide loader after fetching
       }
-    } catch (err) {
-      console.log("Something went wrong: VerifyTrackSection", err);
-    }
+    },
+    // Add the required dependencies for useCallback
+    [productDetails, countrycode, query.uid, showLoader, hideLoader]
+  );
 
-    hideLoader(); // Hide the loader after the fetch
-  };
+  // useEffect(() => {
+  //   if (query.uid && !Array.isArray(query.uid)) {
+  //     updateProductDetails(true); // Force fetch on mount
+  //   }
+
+  //   const prevCurrency = prevCurrencyRef.current;
+
+  //   // Check if currency has changed
+  //   if (prevCurrency !== currency) {
+  //     updateProductDetails(true); // Force refetch if currency changes
+  //   }
+
+  //   // Update the ref to the current currency
+  //   prevCurrencyRef.current = currency;
+  // }, [currency, query.uid]);
+
+  // useEffect(() => {
+  //   let chk = 0; // Declare the counter
+  //   const prevCurrency = prevCurrencyRef.current;
+
+  //   // Check if currency has changed
+  //   if (prevCurrency !== null && prevCurrency !== currency) {
+  //     //console.log(`Currency has changed from ${prevCurrency} to ${currency}`);
+  //     chk += 1; // Increment the counter
+  //   }
+
+  //   // Log query.number
+  //   //console.log("query.number", chk);
+
+  //   // Only call updateProductDetails if chk is greater than 0, countrycode is valid, and uid is a string
+  //   if (chk > 0 && countrycode && query.uid && typeof query.uid === "string") {
+  //     updateProductDetails(true); // Force refetch if conditions are met
+  //   }
+
+  //   // Update the ref to the current currency
+  //   prevCurrencyRef.current = currency;
+  // }, [currency, countrycode, query.uid]);
 
   useEffect(() => {
-    let chk = 0; // Declare the counter
     const prevCurrency = prevCurrencyRef.current;
 
-    // Check if currency has changed
-    if (prevCurrency !== null && prevCurrency !== currency) {
-      //console.log(`Currency has changed from ${prevCurrency} to ${currency}`);
-      chk += 1; // Increment the counter
+    // If currency has changed or the page is refreshed (productDetails is null), fetch data
+    if (prevCurrency !== currency || !productDetails) {
+      updateProductDetails(true); // Force fetch if currency changed or page refreshed
     }
 
-    // Log query.number
-    //console.log("query.number", chk);
-
-    // Only call updateProductDetails if chk is greater than 0, countrycode is valid, and uid is a string
-    if (chk > 0 && countrycode && query.uid && typeof query.uid === "string") {
-      updateProductDetails(true); // Force refetch if conditions are met
-    }
-
-    // Update the ref to the current currency
+    // Update the previous currency ref for the next render
     prevCurrencyRef.current = currency;
-  }, [currency, countrycode, query.uid]);
+  }, [currency, query.uid, productDetails, updateProductDetails]);
 
   return (
     <VerifyTrackContext.Provider
