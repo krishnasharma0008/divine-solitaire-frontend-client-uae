@@ -1,6 +1,4 @@
-import { Dialog, DialogBody } from "@material-tailwind/react";
-//import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 
 import {
@@ -10,7 +8,7 @@ import {
   TermsConditionIcon,
 } from "@/components";
 import { InsuranceIcon } from "@/components";
-import { getToken } from "@/local-storage";
+import { getToken, setRedirectionRoute } from "@/local-storage";
 
 import { VerifyTrackContext } from "../../../../context/verify-track-context";
 import { STEPS } from "../verify-track-loan/verify-track-loan-steps-enum";
@@ -51,43 +49,55 @@ const VerifyTrackInsuranceSc: React.FC<VerifyTrackInsuranceScProps> = ({
   setCurrentStep,
 }) => {
   const { productDetails } = useContext(VerifyTrackContext);
-  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); //Login dialog visibility
+
+  const { push } = useRouter();
 
   if (!productDetails) return null;
   const handleClick = () => {
     if (getToken()) {
       setCurrentStep(STEPS.TWO);
     } else {
-      setShowLogin(true);
+      handleDialogOpen();
     }
   };
 
-  // useEffect(() => {
-  //   if (currentTab !== "") {
-  //     handleClick();
-  //   }
-  // }, [handleClick]);
+  //console.log("Image Gallery :", imageGalleryImages);
+  const handleDialogOpen = () => {
+    setIsDialogOpen(true); // Open dialog
+  };
+  const handleDialogClose = () => {
+    setRedirectionRoute(window.location.pathname);
+    push("/login");
+    setIsDialogOpen(false); // Close dialog
+  };
 
   return (
     <div>
       <>
-        <Dialog
-          open={showLogin}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          handler={() => {
-            setShowLogin(false);
-          }}
-          className="md:max-w-[350px] md:min-w-[350px] lg:max-w-[350px] lg:min-w-[350px] rounded-none"
-        >
-          <DialogBody className="p-8 font-body text-black text-center">
-            Please Login To Proceed
-            <Link className="mt-4 block max-w-xs m-auto" href="/login">
-              <Button themeType="dark" classes="">
-                Login
-              </Button>
-            </Link>
-          </DialogBody>
-        </Dialog>
+        {/* Dialog Structure */}
+        {isDialogOpen && (
+          <div className="pointer-events-auto fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60">
+            <div className="relative max-w-[311px]  lg:max-w-[40%] sm:max-w-[90%] bg-white shadow-sm">
+              <div className="w-full relative border-t border-slate-200 p-4 ">
+                <div className="flex justify-center items-center font-[Montserrat] text-sm leading-6">
+                  <p className="font-medium">Please Login To Proceed</p>
+                </div>
+              </div>
+              <div className="flex shrink-0 flex-wrap items-center pb-4 justify-center">
+                <div className="w-24 ">
+                  <Button
+                    onClick={handleDialogClose} // Close dialog on Cancel button
+                    className="rounded-md border border-transparent py-2 px-4 text-center text-sm transition-all text-slate-600 hover:bg-slate-100"
+                    themeType="dark"
+                  >
+                    Login In
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </>
       <div className="w-full px-4">
         <div>
