@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ShapeOption } from "@/interface/shape-option";
 
@@ -66,12 +66,26 @@ const ShapeSelector: React.FC<ShapeSelectorProps> = ({
   const options =
     stype === "VDF" || stype === "INY" ? FancyShapeOptions : ShapeOptions;
 
+  const getValidShapeValue = (): string | undefined => {
+    if (selected !== null) {
+      return options[selected]?.value;
+    }
+    return undefined;
+  };
+
   const onClickHandler = (idx: number) => () => {
     setSelected(idx);
     if (onSelect) {
       onSelect(options[idx]?.value);
     }
   };
+
+  useEffect(() => {
+    const selectedIndex = options.findIndex(
+      (option) => option.value === getValidShapeValue()
+    );
+    setSelected(selectedIndex !== -1 ? selectedIndex : defaultValue);
+  }, [options, defaultValue]); // Depend only on options and defaultValue
 
   return (
     <div className={`w-full md:mb-16 ${className}`}>
