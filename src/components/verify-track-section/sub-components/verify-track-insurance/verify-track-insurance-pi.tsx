@@ -148,6 +148,10 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
       validationErrors.phdob = "Date of Birth is required";
     }
 
+    if (!state.purstore) {
+      validationErrors.purstore = "Jeweller name is required";
+    }
+
     if (!state.phcity) {
       validationErrors.phcity = "City is required";
     }
@@ -190,7 +194,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
       invval: state.invval,
     };
 
-    console.log(payload);
+    //console.log(payload);
     createVerifyTrackInsurance(payload)
       .then((res) => {
         console.log("It is successfully created", res);
@@ -254,6 +258,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
               containerClass="!mb-0"
               errorText={errors.phemail}
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              placeholder="somemail@gmail.com"
             />
 
             <InputText
@@ -349,9 +354,9 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
             errorText={errors.uid}
           />
           <InputText
-            label="Jeweller Name"
+            label="Jeweller Name *"
             type="text"
-            value={productDetails.purchase_from}
+            value={productDetails.purchase_from || state.purstore}
             onChange={onChangeHandlerCreator("purstore")}
             className={`w-full ${errors.purstore ? "border-red-500" : ""}`}
             containerClass="!mb-0"

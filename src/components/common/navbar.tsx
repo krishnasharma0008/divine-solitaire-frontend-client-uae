@@ -10,27 +10,25 @@ import React from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { URLs } from "@/constants";
+import { useAuth } from "@/context/auth-context";
 import { useCurrency } from "@/context/currency-context";
 //import Currency from "@/enum/currency-enum";
 //import useCountryCode from "@/hooks/use-country-code";
 import { Breadcrumbs } from "@/interface/breadcrumbs";
-import { deleteToken, getToken } from "@/local-storage";
+//import { deleteToken, getToken } from "@/local-storage";
 //import { countryCurrencyMap } from "@/util/country-currency-map";
 
 import Button from "./button";
 import Dropdown from "./dropdown";
 import Sidebar, { SidebarProps } from "./sidebar";
-import {
-  ShoppingCartIcon,
-  StoreLocatorIcon,
-  UserIcon,
-} from "../icons";
+import { ShoppingCartIcon, StoreLocatorIcon, UserIcon } from "../icons";
 
 const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const { push } = useRouter();
@@ -42,12 +40,18 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
     setCurrency(selectedValue);
   };
 
-  const logout = () => {
-    deleteToken();
-    setIsLoggedIn(false);
-    push("/");
-    // Force a page refresh
-    window.location.reload();
+  // const signout = () => {
+  //   deleteToken();
+  //   setIsLoggedIn(false);
+  //   push("/");
+  //   // Force a page refresh
+  //   window.location.reload();
+  // };
+
+  const signout = () => {
+    logout(); // Use the context logout method
+    push("/"); // Redirect after logout
+    window.location.reload(); // Force a page refresh
   };
 
   const profile = () => {
@@ -55,13 +59,13 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
     push("/profile");
   };
 
-  useEffect(() => {
-    if (getToken()) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (getToken()) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     setIsLoggedIn(false);
+  //   }
+  // }, []);
 
   const sidebarProps: Omit<SidebarProps, "pageName"> = {
     items: [
@@ -248,7 +252,7 @@ const Navbar: React.FC<Omit<Breadcrumbs, "breadcrumbs">> = ({ pageName }) => {
                   My Profile
                 </Typography>
               </MenuItem>
-              <MenuItem className="flex items-center gap-2 " onClick={logout}>
+              <MenuItem className="flex items-center gap-2 " onClick={signout}>
                 <svg
                   width="16"
                   height="14"

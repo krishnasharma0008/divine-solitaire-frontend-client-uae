@@ -1,5 +1,5 @@
 import { Dialog, DialogBody } from "@material-tailwind/react";
-//import Link from "next/link";
+import Link from "next/link";
 
 import { Button } from "../common";
 
@@ -9,14 +9,13 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ showLogin, setShowLogin }) => {
-  const handleLoginClick = () => {
-    console.log("Checking ");
-    // Store the current URL in session storage for redirecting after login
-    sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
-
-    // Navigate to the login page
-    window.location.href = "/login";
+  const handleLogin = () => {
+    // Your login logic here
+    console.log("Login button clicked");
+    // e.g., call your login API or update the state
   };
+
+  if (!showLogin) return null; // Don't render if showLogin is false
 
   return (
     <Dialog
@@ -29,11 +28,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ showLogin, setShowLogin }) => {
     >
       <DialogBody className="p-8 font-body text-black text-center">
         Please Login To Proceed
-        {/* <Link className="mt-4 block max-w-xs m-auto" href="/login"> */}
-        <Button themeType="dark" classes="" onClick={handleLoginClick}>
-          Login
-        </Button>
-        {/* </Link> */}
+        <Link className="mt-4 block max-w-xs m-auto" href="/login">
+          <Button themeType="dark" classes="" onClick={handleLogin}>
+            Login
+          </Button>
+        </Link>
       </DialogBody>
     </Dialog>
   );

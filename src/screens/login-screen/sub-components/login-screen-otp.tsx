@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { loginGetOTP, loginVerifyOTP } from "@/api";
 import { Button } from "@/components";
 import { NOTIFICATION_MESSAGES } from "@/config";
+import { useAuth } from "@/context/auth-context";
 import LoaderContext from "@/context/loader-context";
 import NotificationContext from "@/context/notification-context";
 import {
@@ -16,6 +17,7 @@ import {
 } from "@/local-storage";
 
 const LoginScreenOtp: React.FC = () => {
+  const { login } = useAuth();
   const { showLoader, hideLoader } = useContext(LoaderContext);
   const [mobileNumber, setMobileNumber] = useState<string>("");
 
@@ -48,6 +50,7 @@ const LoginScreenOtp: React.FC = () => {
       deleteMobileNumber();
       notify(NOTIFICATION_MESSAGES.LOGIN_SUCCESS);
       push(getRedirectionRoute() || "/");
+      login(res.data.token);
       deleteRedirectionRoute();
     } catch (err) {
       console.log("LoginScreenOtp", err);

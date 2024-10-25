@@ -13,11 +13,11 @@ import { BorderBar, Button } from "@/components";
 import DetailsTable from "@/components/common/details-table";
 import ImageGallery from "@/components/common/image-gallery";
 //import generateImage from "@/components/common/imagewriter";
-import LoginModal from "@/components/modals/login-modal";
+//import LoginModal from "@/components/modals/login-modal";
 import { NOTIFICATION_MESSAGES } from "@/config";
 import LoaderContext from "@/context/loader-context";
 import NotificationContext from "@/context/notification-context";
-import { getToken } from "@/local-storage";
+import { getToken, setRedirectionRoute } from "@/local-storage";
 import {
   isJewelleryProduct,
   formatByCurrency,
@@ -33,9 +33,10 @@ import VerifyTrackSummaryPopup from "./verify-track-summary-popup";
 import { VerifyTrackContext } from "../../../../context/verify-track-context";
 
 const VerifyTrackSummary: React.FC = () => {
-  const [showLogin, setShowLogin] = useState(false);
+  //const [showLogin, setShowLogin] = useState(false);
 
   const [openInsureNow, setOpenInsureNow] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); //Login dialog visibility
 
   const { push } = useRouter();
 
@@ -54,7 +55,8 @@ const VerifyTrackSummary: React.FC = () => {
     showLoader();
     // Show the login modal when button is clicked
     if (!getToken()) {
-      setShowLogin(true);
+      //setShowLogin(true);
+      handleDialogOpen();
       hideLoader();
       return;
     }
@@ -63,7 +65,6 @@ const VerifyTrackSummary: React.FC = () => {
     hideLoader();
   };
 
-  
   useEffect(() => {
     const body = document.querySelector("body");
     if (body) {
@@ -95,7 +96,8 @@ const VerifyTrackSummary: React.FC = () => {
         push(isWishlist ? "?/wishlist" : "/portfolio");
         return;
       } else if (!getToken()) {
-        setShowLogin(true);
+        //setShowLogin(true);
+        handleDialogOpen();
         hideLoader();
         return;
       }
@@ -188,16 +190,25 @@ const VerifyTrackSummary: React.FC = () => {
     });
   });
 
-  console.log("Image Gallery :", imageGalleryImages);
+  //console.log("Image Gallery :", imageGalleryImages);
+  const handleDialogOpen = () => {
+    setIsDialogOpen(true); // Open dialog
+  };
+  const handleDialogClose = () => {
+    setRedirectionRoute(window.location.pathname);
+    push("/login");
+    setIsDialogOpen(false); // Close dialog
+  };
 
   return (
-    <div className="[&>div]:px-4 [&>div]:pb-4 [&>div]:md:px-0 [&>.swiper]:border-none ">
-      <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} />
-      <VerifyTrackSummaryPopup
-        open={openInsureNow}
-        setOpen={setOpenInsureNow}
-      />
-      {/* <Carousel
+    <>
+      <div className="[&>div]:px-4 [&>div]:pb-4 [&>div]:md:px-0 [&>.swiper]:border-none ">
+        {/* <LoginModal showLogin={showLogin} setShowLogin={setShowLogin} /> */}
+        <VerifyTrackSummaryPopup
+          open={openInsureNow}
+          setOpen={setOpenInsureNow}
+        />
+        {/* <Carousel
         type="slide"
         cardType="ImageCard"
         className="border"
@@ -205,144 +216,144 @@ const VerifyTrackSummary: React.FC = () => {
         navigation={false}
         items={carouselImages}
       /> */}
-      <ImageGallery images={imageGalleryImages} />
-      <div className="w-full">
-        <div className="mt-10 mb-7 flex justify-between">
-          <div className="">{`UID : ${productDetails.uid}`}</div>
-          <div className="">{`Design No. : ${productDetails.design_no}`}</div>
-        </div>
-        <div className="text-gold text-3xl leading-8 font-newsreader font-semibold">
-          {`${formatByCurrency(
-            Math.round(productDetails.current_price),
-            productDetails.currency_locale,
-            productDetails.currency_code
-          )}`}
-          <span className="font-montserrat text-sm leading-4 ml-2 font-body font-normal leading-none">
-            Excl. GST
-          </span>
-          {!isCoinProduct(productDetails) &&
-          isJewelleryProduct(productDetails) === false ? (
-            // <Tooltip
-            //   content={
-            //     <div className="w-auto">
-            //       <Typography
-            //         variant="small"
-            //         color="white"
-            //         className="font-normal opacity-80"
-            //       >
-            //         Premium charges may be applicable
-            //       </Typography>
-            //     </div>
-            //   }
-            // >
-            <Tooltip content="Premium charges may be applicable">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 text-black float-right"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                />
-              </svg>
-            </Tooltip>
-          ) : (
-            ""
+        <ImageGallery images={imageGalleryImages} />
+        <div className="w-full">
+          <div className="mt-10 mb-7 flex justify-between">
+            <div className="">{`UID : ${productDetails.uid}`}</div>
+            <div className="">{`Design No. : ${productDetails.design_no}`}</div>
+          </div>
+          <div className="text-gold text-3xl leading-8 font-newsreader font-semibold">
+            {`${formatByCurrency(
+              Math.round(productDetails.current_price),
+              productDetails.currency_locale,
+              productDetails.currency_code
+            )}`}
+            <span className="font-montserrat text-sm leading-4 ml-2 font-body font-normal leading-none">
+              Excl. GST
+            </span>
+            {!isCoinProduct(productDetails) &&
+            isJewelleryProduct(productDetails) === false ? (
+              // <Tooltip
+              //   content={
+              //     <div className="w-auto">
+              //       <Typography
+              //         variant="small"
+              //         color="white"
+              //         className="font-normal opacity-80"
+              //       >
+              //         Premium charges may be applicable
+              //       </Typography>
+              //     </div>
+              //   }
+              // >
+              <Tooltip content="Premium charges may be applicable">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 text-black float-right"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                  />
+                </svg>
+              </Tooltip>
+            ) : (
+              ""
+            )}
+          </div>
+          {productDetails.category && (
+            <div className="uppercase mt-2">
+              {productDetails.category} - {productDetails.collection}
+            </div>
           )}
         </div>
-        {productDetails.category && (
-          <div className="uppercase mt-2">
-            {productDetails.category} - {productDetails.collection}
-          </div>
+        <BorderBar className="my-3" />
+
+        {isJewelleryProduct(productDetails) && (
+          <>
+            <VerifyTrackSummarySltAccordion productDetails={productDetails} />
+            <VerifyTrackSummaryMountAccordion productDetails={productDetails} />
+          </>
         )}
-      </div>
-      <BorderBar className="my-3" />
 
-      {isJewelleryProduct(productDetails) && (
-        <>
-          <VerifyTrackSummarySltAccordion productDetails={productDetails} />
-          <VerifyTrackSummaryMountAccordion productDetails={productDetails} />
-        </>
-      )}
+        {isDiamondProduct(productDetails) && (
+          <>
+            <DetailsTable
+              title="Divine Solitaires: "
+              headings={["Shape", "Carat", "Colour", "Clarity"]}
+              rows={productDetails.slt_details?.map((item) => [
+                item.shape,
+                item.carat.toFixed(2),
+                item.colour,
+                item.clarity,
+              ])}
+              growth={
+                isSoldProduct(productDetails)
+                  ? ((productDetails.slt_details[0].current_price -
+                      productDetails.slt_details[0].purchase_price) /
+                      productDetails.slt_details[0].purchase_price) *
+                    100
+                  : undefined
+              }
+            />
+          </>
+        )}
+        {isSoldProduct(productDetails) && (
+          <>
+            <VerifyTrackSummaryDetailsAccordion
+              discount={productDetails.purchase_discount}
+              purchaseAmount={productDetails.purchase_price as number}
+              premium={0}
+              total={productDetails.purchase_price_final as number}
+              currency_locale={productDetails.currency_locale}
+              currency_code={productDetails.currency_code}
+              className="mt-9"
+            />
+            <div className="mt-4 text-base sm:text-lg px-4 font-medium">
+              {"Jeweller's Name:"}
+            </div>
+            <div className="mt-2 text-sm sm:text-base px-4">
+              {productDetails.purchase_from}
+            </div>
 
-      {isDiamondProduct(productDetails) && (
-        <>
-          <DetailsTable
-            title="Divine Solitaires: "
-            headings={["Shape", "Carat", "Colour", "Clarity"]}
-            rows={productDetails.slt_details?.map((item) => [
-              item.shape,
-              item.carat.toFixed(2),
-              item.colour,
-              item.clarity,
-            ])}
-            growth={
-              isSoldProduct(productDetails)
-                ? ((productDetails.slt_details[0].current_price -
-                    productDetails.slt_details[0].purchase_price) /
-                    productDetails.slt_details[0].purchase_price) *
-                  100
-                : undefined
-            }
-          />
-        </>
-      )}
-      {isSoldProduct(productDetails) && (
-        <>
-          <VerifyTrackSummaryDetailsAccordion
-            discount={productDetails.purchase_discount}
-            purchaseAmount={productDetails.purchase_price as number}
-            premium={0}
-            total={productDetails.purchase_price_final as number}
-            currency_locale={productDetails.currency_locale}
-            currency_code={productDetails.currency_code}
-            className="mt-9"
-          />
-          <div className="mt-4 text-base sm:text-lg px-4 font-medium">
-            {"Jeweller's Name:"}
-          </div>
-          <div className="mt-2 text-sm sm:text-base px-4">
-            {productDetails.purchase_from}
-          </div>
+            <div className="mt-4 text-base sm:text-lg px-4 font-medium">
+              {"Date Of Purchase:"}
+            </div>
+            <div className="mt-2 text-sm sm:text-base px-4">
+              {productDetails.purchase_date}
+            </div>
+          </>
+        )}
 
-          <div className="mt-4 text-base sm:text-lg px-4 font-medium">
-            {"Date Of Purchase:"}
-          </div>
-          <div className="mt-2 text-sm sm:text-base px-4">
-            {productDetails.purchase_date}
-          </div>
-        </>
-      )}
+        <BorderBar className="my-8" />
 
-      <BorderBar className="my-8" />
-
-      {/* <Checkbox
+        {/* <Checkbox
         id="remember_me"
         onChange={handleCheckboxChange}
         className="text-base leading-5"
       >
         Please sign me up
       </Checkbox> */}
-      <div
-        className={`flex ${
-          productDetails.uid_status === "SOLD"
-            ? "justify-between"
-            : "justify-center"
-        } gap-1 mt-14`}
-      >
-        <Button
-          themeType="light"
-          classes="w-6/12 text-xs sm:text-base leading-5 font-medium"
-          onClick={handleOpenInsurance}
+        <div
+          className={`flex ${
+            productDetails.uid_status === "SOLD"
+              ? "justify-between"
+              : "justify-center"
+          } gap-1 mt-14`}
         >
-          INSURE NOW
-        </Button>
-        {/* <Button
+          <Button
+            themeType="light"
+            classes="w-6/12 text-xs sm:text-base leading-5 font-medium"
+            onClick={handleOpenInsurance}
+          >
+            INSURE NOW
+          </Button>
+          {/* <Button
           themeType="dark"
           classes="w-6/12 text-xs sm:text-base leading-5 font-medium"
           onClick={handleClick}
@@ -351,20 +362,44 @@ const VerifyTrackSummary: React.FC = () => {
             isWishlist ? "Wishlist" : "Portfolio"
           }`}
         </Button> */}
-        <Button
-          themeType="dark"
-          classes={`w-6/12 text-xs sm:text-base leading-5 font-medium ${
-            productDetails.uid_status !== "SOLD" && "hidden"
-          }`}
-          onClick={handleClick}
-        >
-          {`${isAdded ? "View" : "Add To"} ${
-            //isWishlist === true && "Portfolio"
-            productDetails.uid_status === "SOLD" && "Portfolio"
-          }`}
-        </Button>
+          <Button
+            themeType="dark"
+            classes={`w-6/12 text-xs sm:text-base leading-5 font-medium ${
+              productDetails.uid_status !== "SOLD" && "hidden"
+            }`}
+            onClick={handleClick}
+          >
+            {`${isAdded ? "View" : "Add To"} ${
+              //isWishlist === true && "Portfolio"
+              productDetails.uid_status === "SOLD" && "Portfolio"
+            }`}
+          </Button>
+        </div>
       </div>
-    </div>
+      {/* Dialog Structure */}
+      {isDialogOpen && (
+        <div className="pointer-events-auto fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60">
+          <div className="relative max-w-[311px]  lg:max-w-[40%] sm:max-w-[90%] bg-white shadow-sm">
+            <div className="w-full relative border-t border-slate-200 p-4 ">
+              <div className="flex justify-center items-center font-[Montserrat] text-sm leading-6">
+                <p className="font-medium">Please Login To Proceed</p>
+              </div>
+            </div>
+            <div className="flex shrink-0 flex-wrap items-center pb-4 justify-center">
+              <div className="w-24 ">
+                <Button
+                  onClick={handleDialogClose} // Close dialog on Cancel button
+                  className="rounded-md border border-transparent py-2 px-4 text-center text-sm transition-all text-slate-600 hover:bg-slate-100"
+                  themeType="dark"
+                >
+                  Login In
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
