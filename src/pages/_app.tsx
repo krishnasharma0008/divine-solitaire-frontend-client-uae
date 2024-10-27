@@ -66,6 +66,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
+        <meta name="robots" content="noindex, nofollow" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
