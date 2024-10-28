@@ -192,7 +192,10 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
     }
 
     if (!state.purstore) {
-      validationErrors.purstore = "Jeweller Name is required";
+      validationErrors.purstore = "Jeweller name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(state.purstore)) {
+      validationErrors.purstore =
+        "Jeweller name should only contain alphabetic characters";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -407,7 +410,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
           />
 
           <InputText
-            label="Invoice Value *"
+            label="Invoice Amount *"
             type="number"
             value={state.invval}
             onChange={onChangeHandlerCreator("invval")}
