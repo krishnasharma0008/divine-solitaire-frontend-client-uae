@@ -44,11 +44,12 @@ const InputText: React.FC<InputTextProps> = ({
         type={type}
         value={value}
         disabled={disabled}
-        error={!!errorText}
+        //error={!!errorText}
         placeholder={placeholder}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
       />
+      {errorText && <p className="text-red-500 text-sm mt-1">{errorText}</p>}
     </div>
   );
 };

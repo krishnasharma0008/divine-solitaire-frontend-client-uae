@@ -122,39 +122,52 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
 
     if (!state.phname) {
       validationErrors.phname = "Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(state.phname)) {
+      validationErrors.phname =
+        "Name should only contain alphabetic characters";
     }
 
-    if (!state.phemail) {
-      validationErrors.phemail = "Email is ";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.phemail)
-    ) {
-      validationErrors.phemail = "Invalid email";
-    }
+    // if (!state.phemail) {
+    //   validationErrors.phemail = "Email is ";
+    // } else if (
+    //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.phemail)
+    // ) {
+    //   validationErrors.phemail = "Invalid email";
+    // }
 
+    // Mobile number validation
     if (!state.phcontactno) {
       validationErrors.phcontactno = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(state.phcontactno)) {
+      validationErrors.phcontactno = "Mobile number must be 10 digits";
     }
 
     if (!state.phaddress) {
       validationErrors.phaddress = "Address is required";
     }
 
+    // Pin code validation
     if (!state.phpincode) {
       validationErrors.phpincode = "Pin code is required";
+    } else if (!/^\d{6}$/.test(state.phpincode)) {
+      validationErrors.phpincode = "Pin code must be 6 digits";
     }
 
-    if (!state.phdob) {
-      validationErrors.phdob = "Date of Birth is required";
+    // Date of Birth validation (no future dates)
+    //   if (!state.phdob) {
+    //     validationErrors.phdob = "Date of Birth is required";
+    // } else
+    if (new Date(state.phdob) > new Date()) {
+      validationErrors.phdob = "Date of Birth cannot be in the future";
     }
 
     if (!state.purstore) {
       validationErrors.purstore = "Jeweller name is required";
     }
 
-    if (!state.phcity) {
-      validationErrors.phcity = "City is required";
-    }
+    // if (!state.phcity) {
+    //   validationErrors.phcity = "City is required";
+    // }
 
     if (!state.invno) {
       validationErrors.invno = "Invoice number is required";
@@ -164,13 +177,23 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
       validationErrors.invval = "Invoice value is required";
     }
 
+    // Invoice Date validation (within the last 7 days)
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
     if (!state.invdate) {
       validationErrors.invdate = "Invoice date is required";
+    } else if (
+      new Date(state.invdate) < sevenDaysAgo ||
+      new Date(state.invdate) > today
+    ) {
+      validationErrors.invdate = "Invoice date must be within the last 7 days";
     }
 
-    // if (!state.purstore) {
-    //   validationErrors.purstore = "Jeweller Name is required";
-    // }
+    if (!state.purstore) {
+      validationErrors.purstore = "Jeweller Name is required";
+    }
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -247,10 +270,11 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
               onChange={onChangeHandlerCreator("phname")}
               className={`w-full ${errors.phname ? "" : "border-red-500"}`}
               errorText={errors.phname}
+              pattern="/^[A-Za-z\s]+$/"
               containerClass="!mb-0"
             />
             <InputText
-              label="E-Mail Id *"
+              label="E-Mail Id"
               type="email"
               value={state.phemail}
               onChange={onChangeHandlerCreator("phemail")}
@@ -281,7 +305,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
             />
 
             <InputText
-              label="City *"
+              label="City"
               type="text"
               value={state.phcity}
               onChange={onChangeHandlerCreator("phcity")}
@@ -308,7 +332,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
             />
 
             <InputText
-              label="Date of Birth *"
+              label="Date of Birth"
               type="date"
               value={state.phdob}
               onChange={onChangeHandlerCreator("phdob")}
@@ -384,7 +408,7 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
 
           <InputText
             label="Invoice Value *"
-            type="text"
+            type="number"
             value={state.invval}
             onChange={onChangeHandlerCreator("invval")}
             className={`w-full ${errors.invval ? "border-red-500" : ""}`}
