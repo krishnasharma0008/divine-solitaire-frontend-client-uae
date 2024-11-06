@@ -129,11 +129,10 @@ const VerifyTrackInsurancePi: React.FC<VerifyTrackInsurancePiProps> = ({
 
     // if (!state.phemail) {
     //   validationErrors.phemail = "Email is ";
-    // } else if (
-    //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.phemail)
-    // ) {
-    //   validationErrors.phemail = "Invalid email";
-    // }
+    // } else
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(state.phemail)) {
+      validationErrors.phemail = "Invalid email";
+    }
 
     // Mobile number validation
     if (!state.phcontactno) {
