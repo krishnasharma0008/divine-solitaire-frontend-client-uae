@@ -108,7 +108,7 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
             // />
           )}
           {filteredImages[selectedImage].url === "/vtdia/carousel_3.png" && (
-            <div className="absolute md:right-[35%] md:top-[59%] right-[25%] top-[47%] text-[#303030] font-semibold text-lg md:text-xl md:ml-4 mt-4 md:mt-0">
+            <div className="absolute md:right-[35%] md:top-[52.5%] right-[25%] top-[47%] text-[#303030] font-semibold text-lg md:text-xl md:ml-4 mt-4 md:mt-0">
               {filteredImages[selectedImage].uid}
             </div>
           )}
