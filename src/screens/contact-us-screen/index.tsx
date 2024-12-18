@@ -153,6 +153,7 @@ const ContactUsScreen: React.FC = () => {
               <br />
               <br />
               <br />
+              <br />
             </span>
           </div>
           <div className="flex flex-col items-center justify-center gap-8">
@@ -165,6 +166,7 @@ const ContactUsScreen: React.FC = () => {
               <br />
               <br />
               <br />
+              <br />
             </span>
           </div>
           <div className="flex flex-col items-center justify-center gap-8">
@@ -174,7 +176,7 @@ const ContactUsScreen: React.FC = () => {
             </span>
             <span className="text-black text-center font-Montserrat text-base font-normal leading-5">
               R S Diamonds Pvt Ltd. Naman Midtown, Office No: 1402, A Wing, SB
-              Marg, Prabhadevi (W), Mumbai - 400013 India.
+              Marg, Prabhadevi (W), Mumbai - 400013, India.
             </span>
           </div>
           <div className="flex flex-col items-center justify-center gap-8">
@@ -184,6 +186,7 @@ const ContactUsScreen: React.FC = () => {
             </span>
             <span className="text-black text-center font-Montserrat text-base font-normal leading-relaxed">
               Monday to Friday 11:00 am to 6:00 pm
+              <br />
               <br />
               <br />
             </span>
