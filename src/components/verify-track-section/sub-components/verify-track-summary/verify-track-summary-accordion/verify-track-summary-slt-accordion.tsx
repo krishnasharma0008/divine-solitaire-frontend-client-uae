@@ -12,7 +12,7 @@ const VerifyTrackSummarySltAccordion: React.FC<VerifyTrackSummarySltProps> = ({
   return (
     <VerifyTrackSummaryAccordion
       title={{
-        main: "Divine Solitaires:",
+        main: "Divine Solitaires",
         details: productDetails.solitaire_details_1,
         smount: "",
         currentPrice: productDetails.slt_total_current_price,

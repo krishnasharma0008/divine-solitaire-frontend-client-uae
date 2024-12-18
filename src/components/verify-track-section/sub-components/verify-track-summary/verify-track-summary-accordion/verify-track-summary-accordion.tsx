@@ -57,7 +57,7 @@ const VerifyTrackSummaryAccordion: React.FC<
               {!title.isCoin && title.uid_status === "SOLD" && (
                 <div className="flex flex-row justify-between text-base font-normal">
                   <div>
-                    {title.main === "Divine Mount" ? (
+                    {title.main === "Divine Solitaires" ? (
                       <>
                         <div>Purchase Price: </div>
                         <div>
