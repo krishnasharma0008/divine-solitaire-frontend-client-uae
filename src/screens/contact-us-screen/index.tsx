@@ -173,8 +173,8 @@ const ContactUsScreen: React.FC = () => {
               Our Address
             </span>
             <span className="text-black text-center font-Montserrat text-base font-normal leading-5">
-              Naman Midtown, Office No: 1402, A Wing, SB Marg, Prabhadevi (W),
-              Mumbai - 400013
+              R S Diamonds Pvt Ltd. Naman Midtown, Office No: 1402, A Wing, SB
+              Marg, Prabhadevi (W), Mumbai - 400013 India
             </span>
           </div>
           <div className="flex flex-col items-center justify-center gap-8">
