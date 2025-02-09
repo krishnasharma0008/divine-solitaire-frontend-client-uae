@@ -6,7 +6,7 @@ import { Button, InputFile } from "@/components/common";
 import InputText from "@/components/common/input-text";
 import { VerifyTrackContext } from "@/context/verify-track-context";
 import { SaleType } from "@/enum/sale-type-enum";
-import { VerifyTrackResaleForm } from "@/interface";
+import type { VerifyTrackResaleForm } from "@/interface";
 
 import { RESALE_STEPS } from "./verify-track-resale-steps-enum";
 
