@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 
 import { MinusIcon, PlusIcon } from "@/components/icons";
-import { calculateGrowth, formatByCurrency } from "@/util";
+import { formatByCurrency } from "@/util"; //calculateGrowth,
 
 interface VerifyTrackSummaryAccordionProps {
   title: {
@@ -56,7 +56,7 @@ const VerifyTrackSummaryAccordion: React.FC<
               )}
               {!title.isCoin && title.uid_status === "SOLD" && (
                 <div className="flex flex-row justify-between text-base font-normal">
-                  {title.main === "Divine Solitaires" && (
+                  {/* {title.main === "Divine Solitaires" && (
                     <div>
                       <div>Purchase Price: </div>
                       <div>
@@ -67,7 +67,7 @@ const VerifyTrackSummaryAccordion: React.FC<
                         )}
                       </div>
                     </div>
-                  )}
+                  )} */}
                   <div>
                     <div>Current Price:</div>
                     <div>
@@ -79,15 +79,7 @@ const VerifyTrackSummaryAccordion: React.FC<
                     </div>
                   </div>
                   {/* <div className="text-green"> */}
-                  <div
-                  // className={
-                  //   parseFloat(
-                  //     calculateGrowth(title.purchasePrice, title.currentPrice)
-                  //   ) < 0
-                  //     ? "text-red-500 bg-red-500"
-                  //     : "text-green-500"
-                  // }
-                  >
+                  {/* <div>
                     <div>Growth :</div>
 
                     <div
@@ -105,7 +97,7 @@ const VerifyTrackSummaryAccordion: React.FC<
                     >
                       {calculateGrowth(title.purchasePrice, title.currentPrice)}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
               {!title.isCoin && title.uid_status === "UNSOLD" && (
