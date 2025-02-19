@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "http",
         hostname: "api.rsdpl.com",
       },
+      {
+        protocol: "https",
+        hostname: "s3.ap-south-1.amazonaws.com",
+      },
     ],
   },
 };
