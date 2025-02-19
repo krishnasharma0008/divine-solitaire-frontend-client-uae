@@ -337,6 +337,8 @@ const SelectYourSolitaire: React.FC = () => {
         onDateChange={getComparision}
         removePrice={removePrice}
         cts={state.cts}
+        clocale={countrylocale}
+        ccode={countryode}
       />
     </>
   );

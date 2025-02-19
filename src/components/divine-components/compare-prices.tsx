@@ -28,6 +28,8 @@ interface ComparePricesProps {
   onDateChange: (date: Date) => void;
   removePrice: (idx: number) => void;
   cts: number;
+  clocale: string;
+  ccode: string;
 }
 
 // eslint-disable-next-line react/display-name
@@ -56,6 +58,8 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
   onDateChange,
   removePrice,
   cts,
+  clocale,
+  ccode,
 }) => {
   const removePriceWrapper = (idx: number) => () => removePrice(idx);
   return (
@@ -98,8 +102,8 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
                     <div className="text-gray-900 text-base font-normal font-montserrat leading-normal">
                       {`${formatByCurrency(
                         parseInt(priceItem.price) * cts,
-                        "en-IN",
-                        "INR"
+                        clocale,
+                        ccode
                       )}`}
                     </div>
                     <div className="flex justify-center items-center gap-1">
