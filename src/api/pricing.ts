@@ -29,7 +29,7 @@ const comparePastPrices = (
   countryCode: string
 ): Promise<AxiosResponse<ComparePastPricesResponse>> =>
   //callWebService(comparePastPricesEndpoint.url, {
-    callWebService(`${comparePastPricesEndpoint.url}?countrycode=${countryCode.slice(0, 2)}&islocal=${countryCode.slice(3)}}`, {
+    callWebService(`${comparePastPricesEndpoint.url}?countrycode=${countryCode.slice(0, 2)}&islocal=${countryCode.slice(3)}`, {
     method: comparePastPricesEndpoint.method,
     params
   });
