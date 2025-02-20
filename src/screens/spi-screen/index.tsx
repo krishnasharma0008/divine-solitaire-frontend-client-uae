@@ -139,7 +139,8 @@ const SolitairePriceIndexScreen: React.FC = () => {
           {/* First column */}
           <div className="flex flex-col gap-2 md:w-1/2">
             <Image
-              src="/api/get-spi-image"
+              //src=`{/api/get-spi-image?currency=${currency}}`
+              src={`/api/get-spi-image?currency=${currency}`}
               alt="spiimage"
               height={0}
               width={0}
