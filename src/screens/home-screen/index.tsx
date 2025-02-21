@@ -67,7 +67,8 @@ const HomepageScreen: React.FC = () => (
       </div>
       <div className="absolute bottom-16 left-0 w-full bg-black text-white text-center md:text-3xl flex flex-col gap-3 p-3 md:p-5">
         <div>Superior quality solitaires with Hearts and Arrows</div>
-        <div>180+ Stores | Across 95+ Cities</div>
+        {/* <div>180+ Stores | Across 95+ Cities</div> */}
+        <div>200+ Stores in 100+ Cities</div>
       </div>
     </div>
 
@@ -82,7 +83,8 @@ const HomepageScreen: React.FC = () => (
         />
         <div className="bg-black text-white text-center md:text-3xl flex flex-col gap-3 pb-3 md:pb-5">
           <div>Superior quality solitaires with Hearts and Arrows</div>
-          <div>180+ Stores | Across 95+ Cities</div>
+          {/* <div>180+ Stores | Across 95+ Cities</div> */}
+          <div>200+ Stores in 100+ Cities</div>
         </div>
       </div>
     </div>
