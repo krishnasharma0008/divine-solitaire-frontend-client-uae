@@ -144,8 +144,8 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
             <ReactDatePicker
               customInput={<CustomDatePicker value="" onClick={console.log} />}
               onChange={onDateChange}
-              showMonthYearPicker
-              dateFormat="MM/YYYY"
+              //showMonthYearPicker
+              dateFormat="DD/MM/YYYY"
             />
           </div>
           <div
