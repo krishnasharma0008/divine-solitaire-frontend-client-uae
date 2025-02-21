@@ -97,9 +97,11 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
                   </div>
                   <div className="flex flex-col items-center gap-4">
                     <div className="text-black text-base font-normal font-montserrat leading-normal">
+                      Date :{" "}
                       {dayjs(new Date(priceItem.date)).format("MMM, YYYY")}
                     </div>
                     <div className="text-gray-900 text-base font-normal font-montserrat leading-normal">
+                      Price:{" "}
                       {`${formatByCurrency(
                         parseInt(priceItem.price) * cts,
                         clocale,
@@ -108,7 +110,7 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
                     </div>
                     <div className="flex justify-center items-center gap-1">
                       <div className="text-base font-normal font-montserrat leading-normal">
-                        {/* {priceItem.growth}% */}
+                        {/* {priceItem.growth}% */}Growth:&nbsp;
                         <span
                           className={`text-base font-normal font-montserrat leading-normal 
                   ${

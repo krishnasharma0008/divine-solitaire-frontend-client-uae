@@ -395,8 +395,8 @@ const useSolitairePrice = () => {
     try {
       state.month = date.getMonth() + 1;
       state.year = date.getFullYear();
-
-      const res = await comparePastPrices(state, countrycode as string);
+      //countrycode as string
+      const res = await comparePastPrices(state, "AE-0");
 
       return {
         month: date.toDateString(),
