@@ -79,11 +79,11 @@ const createImage = async (
     <text x="19%" y="50%" text-anchor="middle" class="title">${Number(spi.Current_Month_SPI).toLocaleString(spi.currency_locale)}</text>
     <text x="39%" y="40%" text-anchor="middle" class="title-2">*</text>
     <text x="55%" y="23%" text-anchor="middle" class="percentage ${isMonthlyGrowth ? "green" : "red"}">${spi.Growth_Month_Percentage}%</text>
-    <svg x="63%" y="-4%" height="800px" width="500px" class="percentage ${isMonthlyGrowth ? "green" : "red"}">
+    <svg x="63%" y="8%" height="800px" width="500px" class="percentage ${isMonthlyGrowth ? "green" : "red"}">
       ${isMonthlyGrowth ? growth : decline}
     </svg>
     <text x="85%" y="23%" text-anchor="middle" class="percentage ${isYearlyGrowth ? "green" : "red"}">${spi.Growth_Year_Percentage}%</text>
-    <svg x="93%" y="-4%" height="800px" width="500px" class="percentage ${isYearlyGrowth ? "green" : "red"}">
+    <svg x="93%" y="8%" height="800px" width="500px" class="percentage ${isYearlyGrowth ? "green" : "red"}">
       ${isYearlyGrowth ? growth : decline}
     </svg>
   </svg>
