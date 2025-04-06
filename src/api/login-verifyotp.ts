@@ -7,6 +7,8 @@ export interface LoginResponse {
   id: number;
   message: "SUCCESS" | "FAILURE";
   token: string;
+  fname:string;
+  mno:string;
 }
 
 const loginVerifyOTPApi = (

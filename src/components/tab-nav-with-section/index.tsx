@@ -11,11 +11,12 @@ interface Tab {
 interface TabNavWithSectionProps {
   sections: Array<Tab>;
   initialTab: number;
-  orientation?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical" | "custom" | "Customhorizontal";
   className?: string;
   tabClass?: string;
   selectedTabClass?: string;
   currentTab?: number;
+  onChange?: (tabIndex: number) => void; // New prop
 }
 
 type TabNavContextData = {
@@ -38,6 +39,7 @@ const TabNavWithSection: React.FC<TabNavWithSectionProps> = ({
   className,
   selectedTabClass,
   currentTab: currentTabProp,
+  onChange,
 }) => {
   const [currentTab, setCurrentTabNum] = useState<number>(initialTab || 1);
   const [currentSection, setCurrentSection] = useState<React.ReactNode | null>(
@@ -47,6 +49,10 @@ const TabNavWithSection: React.FC<TabNavWithSectionProps> = ({
   const onTabSwitchHandler = (newTabIndex: number) => {
     setCurrentSection(sections[newTabIndex - 1].component);
     setCurrentTabNum(newTabIndex);
+    //to get current tab
+    if (onChange) {
+      onChange(newTabIndex); // Notify parent about the tab change
+    }
   };
 
   useEffect(() => {
@@ -77,6 +83,41 @@ const TabNavWithSection: React.FC<TabNavWithSectionProps> = ({
   }, [currentTab, sections]);
 
   if (orientation === "horizontal")
+    return (
+      <>
+        <TabNav
+          className={className}
+          currentTab={currentTab}
+          initialTab={initialTab}
+          onTabSwitch={onTabSwitchHandler}
+          orientation={orientation}
+          tabClass={tabClass}
+          //tabs={sections.map(({ title }) => title)}
+          tabs={sections.map(({ label, icon }) => ({ label, icon }))}
+          selectedTabClass={selectedTabClass}
+        />
+        {currentSection}
+      </>
+    );
+
+  if (orientation === "custom")
+    return (
+      <>
+        <TabNav
+          className={className}
+          currentTab={currentTab}
+          initialTab={initialTab}
+          onTabSwitch={onTabSwitchHandler}
+          orientation={orientation}
+          tabClass={tabClass}
+          //tabs={sections.map(({ title }) => title)}
+          tabs={sections.map(({ label, icon }) => ({ label, icon }))}
+          selectedTabClass={selectedTabClass}
+        />
+        {currentSection}
+      </>
+    );
+  if (orientation === "Customhorizontal")
     return (
       <>
         <TabNav

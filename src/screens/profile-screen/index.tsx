@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 
 import { createProfile, getProfileDetail } from "@/api";
 import { Button } from "@/components/common";
 import Checkbox from "@/components/common/checkbox";
 import InputText from "@/components/common/input-text";
+import { NOTIFICATION_MESSAGES } from "@/config";
+import NotificationContext from "@/context/notification-context";
 import { ProfileForm } from "@/interface";
 import { getToken } from "@/local-storage";
 
@@ -14,6 +17,7 @@ interface ProfileFormAction {
 }
 
 const initialState: ProfileForm = {
+  vsource: "Website",
   fname: "",
   email: "",
   contactno: "",
@@ -22,6 +26,9 @@ const initialState: ProfileForm = {
   dob: "",
   city: "",
   state: "",
+  gender: "",
+  //tncdat: "",
+  doanniv: "",
 };
 
 const ProfileFormReducer = (state: ProfileForm, action: ProfileFormAction) => {
@@ -37,9 +44,11 @@ const ProfileFormReducer = (state: ProfileForm, action: ProfileFormAction) => {
 
 const Profile: React.FC = () => {
   const [state, dispatch] = useReducer(ProfileFormReducer, initialState);
-
+  const { notify } = useContext(NotificationContext);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [tnc, setTnc] = useState<boolean>(false);
+  //const [userExists, setUserExists] = useState<boolean>(false);
+
   const { push } = useRouter();
 
   const onChangeHandlerCreator = (
@@ -103,15 +112,21 @@ const Profile: React.FC = () => {
     const payload: ProfileForm = {
       ...state,
       dob: new Date(state.dob || Date.now()).toISOString(),
+      //tncdat: tnc ? new Date(Date.now()).toISOString() : null,
     };
 
     createProfile(payload)
       .then(() => {
         console.log("It is successfully created");
-        //push('/admin/insurance')
+        notify(NOTIFICATION_MESSAGES.PROFILE_UPDATE_SUCESS);
+        push("/");
       })
       .catch((err) => console.log("Error", err));
   };
+
+  // useEffect(() => {
+  //   setUserExists(!!getUser());
+  // }, []);
 
   useEffect(() => {
     if (!getToken()) {
@@ -241,15 +256,18 @@ const Profile: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-wrap mb-3">
-            <div className="w-full px-3">
+            <div className="flex items-center px-3 whitespace-nowrap">
               <Checkbox
                 id="remember_me"
                 onChange={handleCheckboxChange}
                 className="text-base leading-5 [&>input]:w-4"
                 checked={tnc}
               >
-                Terms & Conditions
+                Accept
               </Checkbox>
+              <Link href="/terms-and-condition" className="text-black ml-1">
+                Terms & Conditions
+              </Link>
             </div>
           </div>
           <div className="md:flex md:items-center md:justify-center mb-3 mt-6 px-3">

@@ -107,4 +107,6 @@ export { default as ZeroFluoroscenceIcon } from "./zero-fluoroscence-icon";
 export { default as PopUpTelephoneIcon } from "./popup-phone-icon";
 export { default as PopUpCancelIcon } from "./popup-cancel-icon";
 export { default as BuybackIcon } from "./buyback-icon";
+export { default as HeadsetIcon } from "./headset-icon";
+export { default as SucessIcon } from "./sucess-icon";
 export { type SvgIconProps } from "./icon-props";

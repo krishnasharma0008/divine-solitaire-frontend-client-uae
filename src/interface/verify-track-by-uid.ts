@@ -1,6 +1,4 @@
 export interface VerifyTrackByUid {
-  buyback_diffrent_store_price: number;
-  buyback_same_store_price: number;
   category: string;
   collection: string;
   currency_code:string;
@@ -46,4 +44,18 @@ export interface VerifyTrackByUid {
   uid: string;
   uid_status: string;
   videos: string[];
+
+  upgrade_minimum_price :number;// new field
+  buyback_solitaire_price: number;
+  buyback_mount_price: number;
+  buyback_price: number;
+  buyback_processing_charges: number;
+  buyback_same_store_price: number;
+  buyback_diffrent_store_price: number;
+  exchange_solitaire_price: number;
+  exchange_mount_price: number;
+  exchange_price: number;
+  exchange_processing_charges: number;
+  exchange_same_store_price: number;
+  exchange_diffrent_store_price: number;
 }

@@ -17,3 +17,4 @@ export { default as VerifyotpScreen } from "./verifyotp-screen";
 export { default as VerifyTrackScreen } from "./verify-track-screen";
 export { default as VerifyTrackSectionScreen } from "./verify-track-section-screen";
 export { default as WishListScreen } from "./wishlist-screen";
+export { default as RegistrationFormScreen } from "./registration-form-screen";

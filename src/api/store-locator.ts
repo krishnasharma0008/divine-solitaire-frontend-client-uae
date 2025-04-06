@@ -9,6 +9,7 @@ import {
   getSroreDetailEndpoint,
   createAppointmentEndpoint,
   getSroreSearchEndpoint,
+  getUserStoreEndpoint,
 } from "./endpoints";
 import callWebService from "./web-service";
 
@@ -83,9 +84,23 @@ const getStoreSearchList = (
   });
 };
 
+const getUserStore = (
+  search_Query: string
+): Promise<AxiosResponse<GetStoreLocatorResponse>> => {
+  const apiUrl = `?value=${search_Query}`;
+  return callWebService(getUserStoreEndpoint.url + apiUrl, {
+    method: getUserStoreEndpoint.method,
+    headers: {
+      Authorization: "Bearer " + getToken(),
+    },
+  });
+};
+
+
 export {
   getStoreLocatorList,
   getStoreDetail,
   createAppointment,
   getStoreSearchList,
+  getUserStore,
 };

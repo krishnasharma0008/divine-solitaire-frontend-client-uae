@@ -1,11 +1,22 @@
 // context/auth-context.tsx
 import React, { createContext, useContext, useState } from "react";
 
-import { deleteToken, getToken, setToken } from "@/local-storage";
+import {
+  deleteToken,
+  getToken,
+  //setToken,
+  deleteUser,
+  getUser,
+  setUser,
+  deleteMobileNumber,
+  getMobileNumber,
+  setMobileNumber,
+  setToken,
+} from "@/local-storage";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (token: string) => void;
+  login: (token: string, user: string, mobileno: string) => void;
   logout: () => void;
 }
 
@@ -14,16 +25,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!getToken());
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    !!getToken() && !!getUser && !!getMobileNumber
+  );
 
-  const login = (token: string) => {
+  const login = (token: string, user: string, mobileno: string) => {
     //console.log("token", token);
     setToken(token);
+    setUser(user);
+    setMobileNumber(mobileno);
     setIsLoggedIn(true);
   };
 
   const logout = () => {
     deleteToken();
+    deleteUser();
+    deleteMobileNumber();
     setIsLoggedIn(false);
   };
 

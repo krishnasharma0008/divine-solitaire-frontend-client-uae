@@ -4,3 +4,4 @@ export { default as VerifyTrackTabsEnum } from "./verify-track-tabs-enum";
 export { default as Clarity } from "./clarity-enum";
 export { default as Colour } from "./colour-enum";
 export { default as Shape } from "./shape-enum";
+export { default as USER_GENDER } from "./user-gender";

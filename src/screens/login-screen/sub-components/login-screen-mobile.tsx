@@ -1,4 +1,4 @@
-import Link from "next/link";
+//import Link from "next/link";
 import { useRouter } from "next/router";
 import { SetStateAction, useContext, useState } from "react";
 
@@ -9,7 +9,10 @@ import { NOTIFICATION_MESSAGES } from "@/config";
 import LoaderContext from "@/context/loader-context";
 import NotificationContext from "@/context/notification-context";
 //import { CountryCode } from "@/interface/country-code";
-import { setMobileNumber as setMobileNumberInStorage } from "@/local-storage";
+import {
+  setMobileNumber as setMobileNumberInStorage,
+  setRedirectionRoute,
+} from "@/local-storage";
 
 const LoginScreenMobileInput: React.FC = ({}) => {
   const { showLoader, hideLoader } = useContext(LoaderContext);
@@ -25,17 +28,29 @@ const LoginScreenMobileInput: React.FC = ({}) => {
     showLoader();
     try {
       if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(loginType)) {
-        //console.log("It's an email", loginType);
+        setMobileNumberInStorage(loginType);
         // It's an email
-        await loginGetOTP(loginType);
-        setMobileNumberInStorage(loginType);
-        push({ pathname: "/login/verify" });
+        const res = await loginGetOTP(loginType);
+        console.log("Message :", res.data.sucess);
+        if (res.data.sucess) {
+          push({ pathname: "/login/verify" });
+        } else {
+          setRedirectionRoute(window.location.pathname);
+          push({ pathname: "/registration-form" });
+        }
+        //push({ pathname: "/login/verify" });
       } else if (/^\d+$/.test(loginType) && loginType.length === 10) {
-        //console.log("It's a Mobile No.", loginType);
-        // It's a phone number
-        await loginGetOTP(loginType);
         setMobileNumberInStorage(loginType);
-        push({ pathname: "/login/verify" });
+
+        const res = await loginGetOTP(loginType);
+        console.log("Sucess :", res.data.sucess);
+        if (res.data.sucess) {
+          push({ pathname: "/login/verify" });
+        } else {
+          setRedirectionRoute(window.location.pathname);
+          push({ pathname: "/registration-form" });
+        }
+        //push({ pathname: "/login/verify" });
       } else {
         // Invalid input, display an error message
         notifyErr("Invalid E-mail or Mobile Number");
@@ -72,9 +87,9 @@ const LoginScreenMobileInput: React.FC = ({}) => {
     <div className="w-full flex flex-col items-center p-6">
       <div className="w-full flex flex-col items-center justify-center">
         <h2 className="text-[23px] font-medium">
-          Login with E-Mail / Mobile Number
+          {/* Login with E-Mail / Mobile Number */}Login
         </h2>
-        <p className="mt-3 text-base  ">
+        <p className="mt-3 text-sm ">
           To experience the best Solitaires in India
         </p>
       </div>
@@ -103,7 +118,7 @@ const LoginScreenMobileInput: React.FC = ({}) => {
       >
         GET VERIFICATION CODE
       </Button>
-      <div className="text-base md:text-lg font-normal leading-5 tracking-normal text-center py-8">
+      {/* <div className="text-base md:text-lg font-normal leading-5 tracking-normal text-center py-8">
         <p className="text-gray-500">
           By Continuing I agree,{" "}
           <strong
@@ -118,7 +133,7 @@ const LoginScreenMobileInput: React.FC = ({}) => {
             </Link>
           </strong>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

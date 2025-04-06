@@ -1,4 +1,5 @@
 export interface ProfileForm {
+  vsource:string;
   address: string;
   city: string;
   contactno: string;
@@ -8,4 +9,7 @@ export interface ProfileForm {
   id?: number;
   pincode: string;
   state: string;
+  gender:string;
+  //tncdat:string|null;
+  doanniv:string;
 }

@@ -149,3 +149,20 @@ export const getDiamondCoinEndpoint: Endpoint = {
   method: HTTP_METHOD.GET,
   url: "api/diamondcoin",
 };
+
+export const getUserStoreEndpoint: Endpoint = {
+  method: HTTP_METHOD.GET,
+  url: "api/storesearch",
+};
+
+// for nuew user registertaion
+export const registerUserEndpoint: Endpoint = {
+  method: HTTP_METHOD.POST,
+  url: "api/user/register",
+};
+
+// for nuew user registertaion
+export const termsConditionEndpoint: Endpoint = {
+  method: HTTP_METHOD.POST,
+  url: "https://query.rsdpl.com/api/user_registration_terms.html",
+};

@@ -1,25 +1,34 @@
 import {
   TOKEN,
+  USER,
   CONTACTNO,
   OTP,
   REDIRECTION_ROUTE,
   PORTFOLIO_UID,
   WISHLIST_UID,
+  TABNO,
   //SEL_CURRENCY,
 } from "./keys";
 
 // export const setToken = (token: string): void =>
 //   localStorage.setItem(TOKEN, token);
+// Function to set the Token in localStorage
 export const setToken = (token: string): void => {
   if (typeof window !== "undefined") {
       localStorage.setItem(TOKEN, token);
   }
 };
 
+export const setUser = (user: string): void =>
+  localStorage.setItem(USER, user);
+
 export const setMobileNumber = (contactno: string): void =>
   localStorage.setItem(CONTACTNO, contactno);
 
 export const setOTP = (otp: string): void => localStorage.setItem(OTP, otp);
+
+export const getUser = (): string | null =>
+  localStorage.getItem(USER);
 
 export const getMobileNumber = (): string | null =>
   localStorage.getItem(CONTACTNO);
@@ -27,6 +36,7 @@ export const getMobileNumber = (): string | null =>
 export const getOTP = (): string | null => localStorage.getItem(OTP);
 
 //export const getToken = (): string | null => localStorage.getItem(TOKEN);
+// Function to get the Token from localStorage
 export const getToken = (): string | null => {
   return typeof window !== "undefined" ? localStorage.getItem(TOKEN) : null;
 };
@@ -38,6 +48,7 @@ export const getRedirectionRoute = (): string | null =>
 export const deleteRedirectionRoute = (): void =>
   localStorage.removeItem(REDIRECTION_ROUTE);
 
+export const deleteUser = ()=> localStorage.setItem(USER,"");
 export const deleteMobileNumber = () => localStorage.setItem(CONTACTNO, "");
 export const deleteOTP = () => localStorage.setItem(OTP, "");
 export const deleteToken = () => localStorage.setItem(TOKEN, "");
@@ -55,6 +66,14 @@ export const getWishListuid = (): string | null =>
   localStorage.getItem(WISHLIST_UID);
 export const deleteWishListuid = (): void =>
   localStorage.removeItem(PORTFOLIO_UID);
+
+
+export const setRedirectionTabno = (tabno: string): void =>
+  localStorage.setItem(TABNO, tabno);
+export const getRedirectionTabno = (): string | null =>
+  localStorage.getItem(TABNO);
+export const deleteRedirectionTabno = (): void =>
+  localStorage.removeItem(TABNO);
 
 //export const setSelCurrency = (SelCurrency: string): void =>
 //  localStorage.setItem(SEL_CURRENCY, SelCurrency);

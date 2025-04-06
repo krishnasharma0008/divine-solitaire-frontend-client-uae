@@ -26,6 +26,7 @@ import {
   isCoinProduct,
 } from "@/util";
 
+import RequisitionForm from "./requisition-form";
 import { VerifyTrackSummaryDetailsAccordion } from "./verify-track-summary-accordion";
 import VerifyTrackSummaryMountAccordion from "./verify-track-summary-accordion/verify-track-summary-mount-accordion";
 import VerifyTrackSummarySltAccordion from "./verify-track-summary-accordion/verify-track-summary-slt-accordion";
@@ -38,7 +39,31 @@ const VerifyTrackSummary: React.FC = () => {
   const [openInsureNow, setOpenInsureNow] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false); //Login dialog visibility
 
+  const [isStepTwoOpen, setIsStepTwoOpen] = useState(false); // Step Two modal
+  const [totalTcs, setTotalTcs] = useState<number>(0); //for 3carat up
+
   const { push } = useRouter();
+
+  useEffect(() => {
+    const totcts =
+      productDetails?.product_type === "Diamond"
+        ? productDetails?.slt_details?.reduce(
+            (total, item) => total + item.carat,
+            0
+          )
+        : 0;
+    setTotalTcs(totcts);
+  }, []);
+
+  const handleClickProceed = () => {
+    if (!getToken()) {
+      handleDialogOpen();
+      hideLoader();
+      return;
+    }
+
+    setIsStepTwoOpen(true); //setCurrentStep(STEPS.TWO);
+  };
 
   const {
     productDetails,
@@ -64,6 +89,17 @@ const VerifyTrackSummary: React.FC = () => {
     setOpenInsureNow(true);
     hideLoader();
   };
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (isStepTwoOpen) {
+      body?.classList.add("overflow-hidden");
+    } else {
+      body?.classList.remove("overflow-hidden");
+    }
+
+    return () => body?.classList.remove("overflow-hidden");
+  }, [isStepTwoOpen]);
 
   useEffect(() => {
     const body = document.querySelector("body");
@@ -156,7 +192,6 @@ const VerifyTrackSummary: React.FC = () => {
       "/vtdia/carousel_3.png",
       "/vtdia/carousel_4.png",
     ];
-
     //console.log(productDetails.images);
   }
 
@@ -266,6 +301,25 @@ const VerifyTrackSummary: React.FC = () => {
               ""
             )}
           </div>
+          {totalTcs > 3 && productDetails.uid_status === "SOLD" && (
+            <div className="bg-[#F8F8F8] pl-2 pr-[18px]">
+              <p className="pt-[10px] pb-[9px] font-montserrat font-light text-[8px] leading-[15px] tracking-[2%]">
+                (The price displayed is over a month old and may not reflect the
+                current value.&quot;)
+              </p>
+              <p className="font-montserrat font-medium text-[10px] text-[#646464] leading-[15px] tracking-[2%] pb-4">
+                please{" "}
+                <u
+                  className="underline decoration-solid decoration-[0%] decoration-0 cursor-pointer"
+                  onClick={handleClickProceed}
+                >
+                  click here
+                </u>{" "}
+                to submit your request, and we will get back to you within 24
+                hours.
+              </p>
+            </div>
+          )}
           {productDetails.category && (
             <div className="uppercase mt-2">
               {productDetails.category} - {productDetails.collection}
@@ -396,6 +450,17 @@ const VerifyTrackSummary: React.FC = () => {
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isStepTwoOpen && (
+        <div className="fixed inset-0 z-[999] grid w-screen place-items-center bg-white">
+          <div className="relative w-full max-w-[500px] bg-white p-2 rounded-lg shadow-lg max-h-[calc(100vh-2rem)] overflow-y-auto">
+            <RequisitionForm
+              //setCurrentStep={setCurrentStep}
+              setIsStepTwoOpen={setIsStepTwoOpen}
+            />
           </div>
         </div>
       )}

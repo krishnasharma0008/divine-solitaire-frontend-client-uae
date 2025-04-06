@@ -21,5 +21,13 @@ export interface VerifyTrackResaleForm {
   currentval: string; //0
   newval: number; //0
 
+  //currentval: number; 
+  solitairval: number; 
+  mountval: number; 
+  charges: number;
+   //newval: number;
+
+   product_category: string;
+
   docfile: string; //null
 }
