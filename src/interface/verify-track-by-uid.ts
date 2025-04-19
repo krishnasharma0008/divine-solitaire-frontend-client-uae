@@ -46,12 +46,18 @@ export interface VerifyTrackByUid {
   videos: string[];
 
   upgrade_minimum_price :number;// new field
+  buyback_isblock:boolean;//new
+  buyback_block_date:string;//new
+  buyback_block_message:string;//new
   buyback_solitaire_price: number;
   buyback_mount_price: number;
   buyback_price: number;
   buyback_processing_charges: number;
   buyback_same_store_price: number;
   buyback_diffrent_store_price: number;
+  exchange_isblock:boolean;//new
+  exchange_block_date:string;//new
+  exchange_block_message:string;//new
   exchange_solitaire_price: number;
   exchange_mount_price: number;
   exchange_price: number;

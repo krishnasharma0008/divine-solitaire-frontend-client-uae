@@ -37,7 +37,10 @@ const ExchangeAtPurchasedStore: React.FC<ExchangeAtPurchasedStoreProps> = ({
   const [salestype, setSalestype] = useState<SaleType>(
     SaleType.EXCHANGE_REQUEST
   );
-  //const [isMRDialogOpen, setIsMRDialogOpen] = useState(false); // restriction modal date is null
+  const [isMRDialogOpen, setIsMRDialogOpen] = useState(false); // restriction modal date is null
+  const [bodymsg1, setBodymsg1] = useState("");
+  const [bodymsg2, setBodymsg2] = useState("");
+  const [bodymsg3, setBodymsg3] = useState("");
   //const [isMRNDialogOpen, setIsMRNDialogOpen] = useState(false); // restriction modal
   //const { checkDate } = useIsWithinOneYear();
 
@@ -61,9 +64,20 @@ const ExchangeAtPurchasedStore: React.FC<ExchangeAtPurchasedStoreProps> = ({
         : 0;
     setTotalPcs(totcts);
 
-    // if (!productDetails.purchase_date) {
-    //   handleMRDialogOpen(); // Trigger pop-up when purchase_date is missing
-    // } else if (isWithinOneYear) {
+    if (productDetails.exchange_isblock === true) {
+      // Split message by periods
+      const messageParts = productDetails.exchange_block_message
+        .split(".")
+        .map((part) => part.trim())
+        .filter(Boolean);
+
+      setBodymsg1(messageParts[0] ? messageParts[0] + "." : "");
+      setBodymsg2(messageParts[1] ? messageParts[1] + "." : "");
+      setBodymsg3(messageParts[2] ? messageParts[2] + "." : "");
+
+      handleMRDialogOpen(); // Trigger pop-up when purchase_date is missing
+    }
+    // else if (isWithinOneYear) {
     //   console.log("2");
     //   console.log("untilDate :", untilDate);
     //   handleMRNDialogOpen(); // Trigger pop-up if within one year
@@ -148,9 +162,9 @@ const ExchangeAtPurchasedStore: React.FC<ExchangeAtPurchasedStoreProps> = ({
   };
 
   // DATE IS NULL
-  // const handleMRDialogOpen = () => {
-  //   setIsMRDialogOpen(true); // Open dialog
-  // };
+  const handleMRDialogOpen = () => {
+    setIsMRDialogOpen(true); // Open dialog
+  };
 
   // DATE IS NOTN NULL
   // const handleMRNDialogOpen = () => {
@@ -184,15 +198,15 @@ const ExchangeAtPurchasedStore: React.FC<ExchangeAtPurchasedStoreProps> = ({
     setSalestype(SaleType.EXCHANGE_REQUEST);
   };
 
-  // const handleMRDialogClose = () => {
-  //   setIsMRDialogOpen(false); // Close dialog
-  //   setSwitchToSummary(true);
-  // };
+  const handleMRDialogClose = () => {
+    setIsMRDialogOpen(false); // Close dialog
+    setSwitchToSummary(true);
+  };
 
-  // const handleMRDialogSubmit = () => {
-  //   setIsMRDialogOpen(false); // Close dialog
-  //   setSwitchToSummary(true);
-  // };
+  const handleMRDialogSubmit = () => {
+    setIsMRDialogOpen(false); // Close dialog
+    setSwitchToSummary(true);
+  };
 
   // const handleMRNDialogClose = () => {
   //   setIsMRDialogOpen(false); // Close dialog
@@ -406,18 +420,18 @@ const ExchangeAtPurchasedStore: React.FC<ExchangeAtPurchasedStoreProps> = ({
       )}
 
       {/* Dialog for sale Restriction when date is null */}
-      {/* {isMRDialogOpen && (
+      {isMRDialogOpen && (
         <RestrictionModal
           isOpen={isMRDialogOpen}
           onClose={handleMRDialogClose}
           onSubmit={handleMRDialogSubmit}
           headmsg="Exchange Policy Restrictions"
-          bodymsg1="Exchange for this product is temporarily restricted."
-          bodymsg2="For assistance, please reach out to our customer"
-          bodymsg3="service team."
+          bodymsg1={bodymsg1} //"Exchange for this product is temporarily restricted."
+          bodymsg2={bodymsg2} //"For assistance, please reach out to our customer"
+          bodymsg3={bodymsg3} //"service team."
           isIcon={"yes"}
         />
-      )} */}
+      )}
 
       {/* Dialog for sale Restriction when date is not null */}
       {/* {isMRNDialogOpen && (

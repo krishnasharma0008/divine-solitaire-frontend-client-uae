@@ -85,7 +85,8 @@ const ExchangeTabs: React.FC = () => {
   // console.log("📌 Until Date:", untilDate?.toISOString() || "Invalid Date");
 
   const shouldHideTabs =
-    Number(totcts) > 3 && productDetails?.uid_status === "SOLD";
+    (Number(totcts) > 3 && productDetails?.uid_status === "SOLD") ||
+    productDetails?.exchange_isblock === true;
   // || isWithinOneYear || !productDetails?.purchase_date;
 
   const tabProps: TabNavWithSectionProps = {
