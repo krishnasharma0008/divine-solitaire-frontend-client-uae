@@ -1,8 +1,9 @@
-import Link from "next/link";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 
-import { createProfile, getProfileDetail } from "@/api";
+import { createProfile, getProfileDetail, termsConditionEndpoint } from "@/api";
+import { XIcon } from "@/components";
 import { Button } from "@/components/common";
 import Checkbox from "@/components/common/checkbox";
 import InputText from "@/components/common/input-text";
@@ -46,8 +47,11 @@ const Profile: React.FC = () => {
   const [state, dispatch] = useReducer(ProfileFormReducer, initialState);
   const { notify } = useContext(NotificationContext);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [tnc, setTnc] = useState<boolean>(false);
+  const [tnc] = useState<boolean>(true);
   //const [userExists, setUserExists] = useState<boolean>(false);
+  // for terms and condition popup
+  const [termsContent, setTermsContent] = useState("");
+  const termsDialogRef = useRef<HTMLDialogElement>(null);
 
   const { push } = useRouter();
 
@@ -70,10 +74,10 @@ const Profile: React.FC = () => {
     };
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = (e.target as HTMLInputElement).checked;
-    setTnc(isChecked);
-  };
+  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const isChecked = (e.target as HTMLInputElement).checked;
+  //   setTnc(isChecked);
+  // };
 
   const onClickHandler = () => {
     const validationErrors: { [key: string]: string } = {};
@@ -143,6 +147,16 @@ const Profile: React.FC = () => {
         console.log("errr", err);
       });
   }, [dispatch, push]);
+
+  const fetchTerms = async () => {
+    try {
+      const response = await axios.get(termsConditionEndpoint.url);
+      setTermsContent(response.data);
+      termsDialogRef.current?.showModal(); // Open modal
+    } catch (error) {
+      console.error("Error fetching Terms & Conditions", error);
+    }
+  };
 
   return (
     <>
@@ -259,15 +273,19 @@ const Profile: React.FC = () => {
             <div className="flex items-center px-3 whitespace-nowrap">
               <Checkbox
                 id="remember_me"
-                onChange={handleCheckboxChange}
+                //onChange={handleCheckboxChange}
                 className="text-base leading-5 [&>input]:w-4"
                 checked={tnc}
               >
-                Accept
+                Accept&nbsp;
               </Checkbox>
-              <Link href="/terms-and-condition" className="text-black ml-1">
+              <button
+                type="button"
+                onClick={fetchTerms}
+                className="text-black underline"
+              >
                 Terms & Conditions
-              </Link>
+              </button>
             </div>
           </div>
           <div className="md:flex md:items-center md:justify-center mb-3 mt-6 px-3">
@@ -284,6 +302,39 @@ const Profile: React.FC = () => {
         {/*  */}
       </div>
       <div className="w-full h-[396px] flex-shrink-0 bg-profilebgimg mt-6"></div>
+      {/* Native Modal */}
+      <dialog
+        ref={termsDialogRef}
+        className="p-2 rounded-lg max-w-[59rem] w-full backdrop:bg-black/50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg"
+      >
+        {/* Close Button (X) at Top-Right */}
+        <button
+          onClick={() => termsDialogRef.current?.close()}
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+        >
+          <XIcon />
+        </button>
+
+        {/* Terms Title */}
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          Terms & Conditions
+        </h2>
+
+        {/* Content Scrollable */}
+        <div className="max-h-[90vh] md:max-h-96 overflow-auto px-2">
+          <p dangerouslySetInnerHTML={{ __html: termsContent }}></p>
+        </div>
+
+        {/* Close Button */}
+        {/* <div className="flex justify-center mt-4">
+          <button
+            onClick={() => termsDialogRef.current?.close()}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div> */}
+      </dialog>
     </>
   );
 };
