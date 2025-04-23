@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 
 import { getDiamondCoin } from "@/api/pricing";
 import { InsuranceIcon, BuybackIcon, Button } from "@/components";
@@ -30,6 +30,30 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
   const { currency } = useCurrency(); //for currency
   const countryCode = currency; //reverseCountryCurrencyMap[currency];
 
+  // for hand scrolling
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDown(true);
+    if (!scrollRef.current) return;
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => setIsDown(false);
+  const handleMouseUp = () => setIsDown(false);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll speed
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   const fetchDiamondCoin = async (countryCode: string) => {
     showLoader();
     try {
@@ -52,7 +76,7 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
   }, [countryCode, hideLoader, notifyErr, showLoader]);
 
   const CardCoin: React.FC<DiamondCoin> = (props) => (
-    <div className="relative flex flex-col mt-6 text-gray-700 bg-white border shadow-md bg-clip-border rounded-xl w-full">
+    <div className="relative flex flex-col mt-6 text-gray-700 bg-white border shadow-md bg-clip-border rounded-xl md:w-[343px] w-[169px]">
       <div className="p-2">
         <table className="table w-full table-fixed [&>tr>td]:text-center md:[&>tr>td]:text-xl [&>tr>td]:text-xs">
           <tr className="w-full">
@@ -118,16 +142,24 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
 
   return (
     <div className="w-full items-start gap-x-[17px] font-montserrat">
-      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-2 bg-slate-50 auto-rows-fr">
-        {diamondCoinList.map(
-          (dcoin) =>
-            dcoin.design_type === "Diamond Coin" && (
+      <div
+        className="scroll-hide overflow-x-auto whitespace-nowrap px-2 bg-slate-50 cursor-grab active:cursor-grabbing"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+        ref={scrollRef}
+      >
+        <div className="inline-flex gap-4 pb-4">
+          {diamondCoinList
+            .filter((dcoin) => dcoin.design_type === "Diamond Coin")
+            .map((dcoin) => (
               <CardCoin key={dcoin.id} {...dcoin} />
-            )
-        )}
+            ))}
+        </div>
       </div>
 
-      <div className="p-4 justify-center items-center gap-[20px] bg-slate-50 mt-6">
+      <div className="px-2 justify-center items-center gap-[20px] bg-slate-50 mt-6">
         <div className="px-2 text-gray-900 md:text-3xl text-lg font-Montserrat font-medium tracking-widest text-center">
           Unique Features
         </div>
@@ -251,6 +283,15 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
           </Link>
         </div>
       </div>
+      <style jsx>{`
+        .scroll-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scroll-hide {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+      `}</style>
     </div>
   );
 };
