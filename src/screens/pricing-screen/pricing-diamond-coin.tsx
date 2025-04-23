@@ -28,7 +28,7 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
 
   //const countryCode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countryCode = currency;//reverseCountryCurrencyMap[currency];
+  const countryCode = currency; //reverseCountryCurrencyMap[currency];
 
   const fetchDiamondCoin = async (countryCode: string) => {
     showLoader();
@@ -52,7 +52,7 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
   }, [countryCode, hideLoader, notifyErr, showLoader]);
 
   const CardCoin: React.FC<DiamondCoin> = (props) => (
-    <div className="relative flex flex-col mt-6 text-gray-700 bg-white border shadow-md bg-clip-border rounded-xl w-96">
+    <div className="relative flex flex-col mt-6 text-gray-700 bg-white border shadow-md bg-clip-border rounded-xl w-full">
       <div className="p-2">
         <table className="table w-full table-fixed [&>tr>td]:text-center md:[&>tr>td]:text-xl [&>tr>td]:text-xs">
           <tr className="w-full">
@@ -118,7 +118,7 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
 
   return (
     <div className="w-full items-start gap-x-[17px] font-montserrat">
-      <div className="flex p-4 justify-center items-center gap-[20px] bg-slate-50">
+      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-2 bg-slate-50 auto-rows-fr">
         {diamondCoinList.map(
           (dcoin) =>
             dcoin.design_type === "Diamond Coin" && (
