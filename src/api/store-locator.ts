@@ -41,9 +41,9 @@ const getStoreLocatorList = (
 };
 
 const getStoreDetail = (
-  codeno: string
+  code: string
 ): Promise<AxiosResponse<GetStoreDetailResponse>> => {
-  return callWebService(getSroreDetailEndpoint.url + codeno, {
+  return callWebService(getSroreDetailEndpoint.url + code, {
     method: getSroreDetailEndpoint.method,
     headers: {
       Authorization: "Bearer " + getToken(),

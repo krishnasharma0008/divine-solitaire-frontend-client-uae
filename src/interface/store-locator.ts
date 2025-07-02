@@ -1,6 +1,6 @@
 export interface StoreLocator {
   id: string;
-  codeno: string;
+  code: string;
   name: string;
   address: string;
   contact_no: string;
@@ -11,5 +11,6 @@ export interface StoreLocator {
   state: string;
   city: string;
   store_image1: string;
+  store_images: string[];
   store_description: string;
 }

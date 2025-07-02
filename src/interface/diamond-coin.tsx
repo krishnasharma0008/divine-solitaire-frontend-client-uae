@@ -8,6 +8,7 @@ interface DiamondCoin {
   mount_details: string; // Add premium_size_range
   gross_weight: number;
   net_weight: number;
+  image: string;
 }
 
 export default DiamondCoin;

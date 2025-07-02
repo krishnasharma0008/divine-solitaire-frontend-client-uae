@@ -7,6 +7,7 @@ import React, { useState, useReducer } from "react";
 import { createAppointment } from "@/api/store-locator";
 import { InputText, Button } from "@/components";
 import AppointmentDialog from "@/components/common/appointment-dialog";
+import Carousel from "@/components/common/carousel";
 import TextArea from "@/components/common/input-text-area";
 import TimePicker from "@/components/common/time-picker";
 import { MapPinLineIcon, PhoneIcon } from "@/components/icons";
@@ -15,7 +16,7 @@ import { AppointmentForm } from "@/interface";
 dayjs.extend(utcPlugin);
 
 export interface StoreViewProps {
-  codeno: string;
+  code: string;
   name: string;
   address: string;
   contact_no: string;
@@ -64,7 +65,7 @@ const AppointmentFormReducer = (
 };
 
 const StoreView: React.FC<StoreViewProps> = ({
-  codeno,
+  code,
   name,
   address,
   contact_no,
@@ -214,6 +215,22 @@ const StoreView: React.FC<StoreViewProps> = ({
     handleOpen();
   };
 
+  const rawImages = Array.isArray(store_image1)
+    ? store_image1
+    : store_image1
+    ? [store_image1]
+    : [];
+
+  const images: { src: string; alt: string }[] = (
+    rawImages.length > 0 ? rawImages : ["/logo/new_logo.png"]
+  ).map((img, index) => ({
+    src: img,
+    alt: `Store Image ${index + 1}`,
+    onClick: () => {
+      if (onClick) onClick(); // ensure it's a function
+    },
+  }));
+
   return (
     <>
       <div className="lg:flex">
@@ -223,7 +240,7 @@ const StoreView: React.FC<StoreViewProps> = ({
             <div className="w-full flex items-start gap-4 self-stretch">
               <div className="w-1/2 flex flex-col justify-between items-center self-stretch">
                 {/* <Link href={`/store-detail/${codeno}`}> */}
-                <Image
+                {/* <Image
                   src={
                     store_image1 === "" ? "/logo/new_logo.png" : store_image1
                   }
@@ -233,7 +250,17 @@ const StoreView: React.FC<StoreViewProps> = ({
                   sizes="100vw"
                   className="w-auto h-auto hover:pointer bg-black p-2"
                   onClick={onClick}
-                />
+                /> */}
+                <div className="w-[200px]">
+                  <Carousel
+                    type="swipe"
+                    cardType="ImageCard"
+                    className="w-auto h-auto hover:pointer -mt-4"
+                    slidesPerView={1}
+                    navigation={true}
+                    items={images}
+                  />
+                </div>
                 {/* </Link> */}
                 <Button
                   onClick={() => onClickDirection(latitude, longitude)}
@@ -245,7 +272,7 @@ const StoreView: React.FC<StoreViewProps> = ({
               </div>
               <div className="w-1/2 flex flex-col justify-center items-center gap-4 flex-1">
                 <div className="flex flex-col justify-center items-start gap-3 self-stretch">
-                  <Link href={`/store-detail/${codeno}`}>
+                  <Link href={`/store-detail/${code}`}>
                     <p className="text-black font-montserrat text-14 font-semibold leading-160 uppercase">
                       {name}
                     </p>
@@ -289,7 +316,7 @@ const StoreView: React.FC<StoreViewProps> = ({
             <div className="flex items-start gap-4 self-stretch">
               {/* first column */}
               <div className="flex flex-col justify-between items-center self-stretch">
-                <Link href={`/store-detail/${codeno}`}>
+                <Link href={`/store-detail/${code}`}>
                   {/* <Link href="#" onClick={onClick}> */}
                   {/* <Image
                     src={store_image1 === "" ? "/menulogo.png" : store_image1}
@@ -314,7 +341,7 @@ const StoreView: React.FC<StoreViewProps> = ({
               </div>
               {/* Second column */}
               <div className="flex flex-col justify-center items-start flex-1">
-                <Link href={`/store-detail/${codeno}`}>
+                <Link href={`/store-detail/${code}`}>
                   <p className="text-black font-montserrat font-semibold leading-160 uppercase">
                     {name}
                   </p>

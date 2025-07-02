@@ -82,7 +82,8 @@ const DiamondCoinSolitares: React.FC<Props> = () => {
           <tr className="w-full">
             <td>
               <Image
-                src="/dia_coin.png"
+                //src="/dia_coin.png"
+                src={props.image}
                 alt="Arrow"
                 height={1000}
                 width={1000}

@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
-import Image from "next/image";
+//import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 
 import { createAppointment, getStoreDetail } from "@/api/store-locator";
 import { InputText, Button, CalendarIcon } from "@/components";
 import AppointmentDialog from "@/components/common/appointment-dialog";
+import Carousel from "@/components/common/carousel";
 import TextArea from "@/components/common/input-text-area";
 import TimePicker from "@/components/common/time-picker";
 import LoaderContext from "@/context/loader-context";
@@ -16,7 +17,7 @@ import StoreLocatorMaps from "../store-locator-screen/sub-component/store-locato
 dayjs.extend(utcPlugin);
 
 const initialState: StoreLocator = {
-  codeno: "",
+  code: "",
   name: "",
   address: "",
   contact_no: "",
@@ -29,6 +30,7 @@ const initialState: StoreLocator = {
   state: "",
   city: "",
   store_description: "",
+  store_images: [],
 };
 
 interface AppointmentFormAction {
@@ -230,6 +232,19 @@ const StoreDetailScreen: React.FC = () => {
     handleOpen();
   };
 
+  const rawImages = Array.isArray(storeList.store_images)
+    ? storeList.store_images
+    : storeList.store_images
+    ? [storeList.store_images]
+    : [];
+
+  const images: { src: string; alt: string }[] = (
+    rawImages.length > 0 ? rawImages : ["/logo/new_logo.png"]
+  ).map((img, index) => ({
+    src: img,
+    alt: `Store Image ${index + 1}`,
+  }));
+
   return (
     <>
       <div className="py-12">
@@ -237,7 +252,7 @@ const StoreDetailScreen: React.FC = () => {
           <div className="w-full flex flex-col md:flex-row justify-between items-center self-stretch">
             {/* First column */}
             <div className="w-full flex flex-col items-center gap-2 p-4 rounded-lg md:w-1/2 ">
-              <Image
+              {/* <Image
                 src={storeList.store_image1}
                 alt={`${storeList.name} Store`}
                 height={502}
@@ -251,7 +266,17 @@ const StoreDetailScreen: React.FC = () => {
                     "w-1/2 h-1/2 hover:pointer bg-black p-2";
                 }}
                 //onClick={handleClick}
-              />
+              /> */}
+              <div className="w-[500px]">
+                <Carousel
+                  type="slide"
+                  cardType="ImageCard"
+                  className="w-[400px] h-auto hover:pointer -mt-4"
+                  slidesPerView={1}
+                  navigation={true}
+                  items={images}
+                />
+              </div>
             </div>
             {/* Second column */}
             <div className="w-full flex flex-col justify-between items-center self-stretch md:w-1/2 px-2 p-4">

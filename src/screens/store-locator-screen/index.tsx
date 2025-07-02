@@ -102,8 +102,8 @@ const StoreLocatorScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleClick = (codeno: string) => {
-    router.push(`/store-detail/${codeno}`);
+  const handleClick = (code: string) => {
+    router.push(`/store-detail/${code}`);
   };
 
   return (
@@ -173,7 +173,7 @@ const StoreLocatorScreen: React.FC = () => {
                   {storeList.map((store) => (
                     <div key={store.id} className="mb-4">
                       <StoreView
-                        codeno={store.codeno}
+                        code={store.code}
                         name={store.name}
                         address={store.address}
                         contact_no={store.contact_no}
@@ -183,7 +183,7 @@ const StoreLocatorScreen: React.FC = () => {
                         country={store.country}
                         state={store.state}
                         city={store.city}
-                        onClick={() => handleClick(store.codeno)}
+                        onClick={() => handleClick(store.code)}
                       />
                     </div>
                   ))}
