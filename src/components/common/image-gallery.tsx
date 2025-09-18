@@ -56,7 +56,9 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
 
   const filteredImages = images.filter(
     (image, index) =>
-      image.title.slice(0, 5) === "Image" || availableVideos.has(index)
+      (image.title.slice(0, 5) === "Image" || availableVideos.has(index)) &&
+      image.thumbnailUrl &&
+      image.thumbnailUrl.trim() !== ""
   );
 
   if (filteredImages.length === 0) {
