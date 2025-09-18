@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface Image {
   url: string;
@@ -12,8 +12,7 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
   const [availableVideos, setAvailableVideos] = useState<Set<number>>(
     new Set()
   );
-
-  const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const zoomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const checkVideoAvailability = async () => {
@@ -26,9 +25,7 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
               setAvailableVideos((prev) => new Set(prev).add(index));
               resolve();
             };
-            videoElement.onerror = () => {
-              resolve(); // Treat as unavailable
-            };
+            videoElement.onerror = () => resolve(); // Treat as unavailable
           });
         }
         return Promise.resolve();
@@ -41,17 +38,33 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
   }, [images]);
 
   const handleImageClick = (index: number) => {
-    if (selectedImage !== index) {
-      setSelectedImage(index);
+    setSelectedImage(index);
+    if (zoomRef.current) {
+      zoomRef.current.style.display = "none"; // Hide zoom when switching images
     }
   };
 
-  const handleVideoLoaded = () => {
-    setVideoLoading(false);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (zoomRef.current) {
+      const target = e.currentTarget;
+      const { top, height } = target.getBoundingClientRect();
+      const x = ((e.pageX - target.offsetLeft) / target.clientWidth) * 100;
+      const y = ((e.pageY - top) / height) * 100;
+
+      // Set the zoom container position and background image
+      zoomRef.current.style.display = "block";
+      zoomRef.current.style.top = `${e.pageY - height / 2}px`;
+      zoomRef.current.style.left = `${
+        target.offsetLeft + target.clientWidth + 20
+      }px`; // Offset for the magnified image on the right
+      zoomRef.current.style.backgroundPosition = `${x}% ${y}%`;
+    }
   };
 
-  const handleVideoError = () => {
-    setVideoLoading(false);
+  const handleMouseLeave = () => {
+    if (zoomRef.current) {
+      zoomRef.current.style.display = "none"; // Hide zoom when mouse leaves the image
+    }
   };
 
   const filteredImages = images.filter(
@@ -66,57 +79,53 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
   }
 
   return (
-    <div className="mb-7">
+    <div className="mb-7 flex flex-col space-y-4">
       {selectedImage !== null && (
-        <div
-          className="relative justify-center"
-          style={{ width: "100%", height: 240 }}
-        >
-          {filteredImages[selectedImage].title.slice(0, 5) === "Image" ? (
-            <img
-              src={filteredImages[selectedImage].url}
-              alt={filteredImages[selectedImage].title}
-              width={200}
-              height={60}
-              className="center md:w-auto w-60 max-h-52 md:max-h-auto md:h-full m-auto object-contain"
-              onError={(e) => {
-                const imgElement = e.target as HTMLImageElement;
-                imgElement.src = "/Empty.jpg"; // Replace with your placeholder image URL
-              }}
-            />
-          ) : (
-            <div className="relative w-full h-full">
-              {videoLoading && (
-                <div className="spinner absolute inset-0 flex items-center justify-center"></div>
-              )}
-              <video
+        <div className="flex space-x-6 items-center">
+          {/* Main Image on the Left */}
+          <div
+            className="relative group"
+            //style={{ width: "50%" }}
+            style={{ width: "300px", height: "300px" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            {filteredImages[selectedImage].title.slice(0, 5) === "Image" ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
                 src={filteredImages[selectedImage].url}
-                autoPlay
-                loop
-                className="object-contain w-full h-full"
-                onCanPlayThrough={handleVideoLoaded}
-                onError={handleVideoError}
+                alt={filteredImages[selectedImage].title}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  const imgElement = e.target as HTMLImageElement;
+                  imgElement.src = "/Empty.jpg"; // Replace with your placeholder image URL
+                }}
               />
-            </div>
-            // <video
-            //   poster="/Empty.jpg"
-            //   src={filteredImages[selectedImage].url}
-            //   // width={200}
-            //   // height={60}
-            //   autoPlay
-            //   //controls
-            //   //className="center md:w-auto w-60 max-h-52 md:max-h-auto md:h-full m-auto object-contain"
-            //   className="object-contain w-full h-full"
-            // />
-          )}
-          {filteredImages[selectedImage].url === "/vtdia/carousel_3.png" && (
-            <div className="absolute md:right-[35%] md:top-[52.5%] right-[25%] top-[47%] text-[#303030] font-semibold text-lg md:text-xl md:ml-4 mt-4 md:mt-0">
-              {filteredImages[selectedImage].uid}
-            </div>
-          )}
+            ) : (
+              <div className="relative w-full h-full">
+                <video
+                  src={filteredImages[selectedImage].url}
+                  autoPlay
+                  loop
+                  className="object-contain w-full h-full"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Magnified Image on the Right */}
+          <div
+            ref={zoomRef}
+            className="absolute rounded-lg border border-gray-300 w-[300px] h-[300px] bg-cover bg-no-repeat pointer-events-none hidden"
+            style={{
+              backgroundImage: `url(${filteredImages[selectedImage].url})`,
+              backgroundSize: "200%",
+            }}
+          ></div>
         </div>
       )}
 
+      {/* Thumbnails */}
       <div className="flex space-x-3 mt-4">
         {filteredImages.map((image: Image, index: number) => (
           <div
@@ -129,11 +138,10 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
             }`}
           >
             {image.title.slice(0, 5) === "Image" ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={image.thumbnailUrl}
                 alt={image.title}
-                height={50}
-                width={50}
                 className="w-12 h-12 object-contain p-[3px]"
                 onError={(e) => {
                   const imgElement = e.target as HTMLImageElement;
@@ -144,17 +152,15 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
               <div className="relative w-12 h-12">
                 <video
                   src={image.thumbnailUrl}
-                  height={50}
-                  width={50}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button className="p-1 flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/play.png"
                       alt="play button"
-                      height={12}
-                      width={12}
+                      className="w-3 h-3"
                     />
                   </button>
                 </div>
