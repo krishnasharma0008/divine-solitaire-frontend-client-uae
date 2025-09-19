@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import CanvasImage from "./canavas-image";
+
 interface Image {
   url: string;
   thumbnailUrl: string;
@@ -85,12 +87,16 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
           {/* Main Image on the Left */}
           <div
             className="relative group"
-            //style={{ width: "50%" }}
             style={{ width: "300px", height: "300px" }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {filteredImages[selectedImage].title.slice(0, 5) === "Image" ? (
+            {filteredImages[selectedImage].url.includes("carousel_3.png") ? (
+              <CanvasImage
+                url={filteredImages[selectedImage].url}
+                uid={filteredImages[selectedImage].uid}
+              />
+            ) : filteredImages[selectedImage].title.slice(0, 5) === "Image" ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={filteredImages[selectedImage].url}
@@ -98,7 +104,7 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   const imgElement = e.target as HTMLImageElement;
-                  imgElement.src = "/Empty.jpg"; // Replace with your placeholder image URL
+                  imgElement.src = "/Empty.jpg";
                 }}
               />
             ) : (
