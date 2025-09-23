@@ -14,6 +14,7 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
   const [availableVideos, setAvailableVideos] = useState<Set<number>>(
     new Set()
   );
+  const [canvasDataUrl, setCanvasDataUrl] = useState<string | null>(null); // 👈 for UID canvas
   const zoomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,31 +42,29 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
 
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
+    setCanvasDataUrl(null); // reset when switching
     if (zoomRef.current) {
-      zoomRef.current.style.display = "none"; // Hide zoom when switching images
+      zoomRef.current.style.display = "none";
     }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (zoomRef.current) {
-      const target = e.currentTarget;
-      const { top, height } = target.getBoundingClientRect();
-      const x = ((e.pageX - target.offsetLeft) / target.clientWidth) * 100;
-      const y = ((e.pageY - top) / height) * 100;
+    if (!zoomRef.current || selectedImage === null) return;
 
-      // Set the zoom container position and background image
-      zoomRef.current.style.display = "block";
-      zoomRef.current.style.top = `${e.pageY - height / 2}px`;
-      zoomRef.current.style.left = `${
-        target.offsetLeft + target.clientWidth + 20
-      }px`; // Offset for the magnified image on the right
-      zoomRef.current.style.backgroundPosition = `${x}% ${y}%`;
-    }
+    const target = e.currentTarget;
+    const { left, top, width, height } = target.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+
+    zoomRef.current.style.display = "block";
+    zoomRef.current.style.top = `${top}px`;
+    zoomRef.current.style.left = `${left + width + 20}px`;
+    zoomRef.current.style.backgroundPosition = `${x}% ${y}%`;
   };
 
   const handleMouseLeave = () => {
     if (zoomRef.current) {
-      zoomRef.current.style.display = "none"; // Hide zoom when mouse leaves the image
+      zoomRef.current.style.display = "none";
     }
   };
 
@@ -80,6 +79,10 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
     return <div>No images or available videos</div>;
   }
 
+  const isCanvasImage =
+    selectedImage !== null &&
+    filteredImages[selectedImage].url.includes("carousel_3.png");
+
   return (
     <div className="mb-7 flex flex-col space-y-4">
       {selectedImage !== null && (
@@ -91,10 +94,11 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {filteredImages[selectedImage].url.includes("carousel_3.png") ? (
+            {isCanvasImage ? (
               <CanvasImage
                 url={filteredImages[selectedImage].url}
                 uid={filteredImages[selectedImage].uid}
+                onReady={setCanvasDataUrl} // 👈 get dataURL
               />
             ) : filteredImages[selectedImage].title.slice(0, 5) === "Image" ? (
               /* eslint-disable-next-line @next/next/no-img-element */
@@ -124,7 +128,11 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
             ref={zoomRef}
             className="absolute rounded-lg border border-gray-300 w-[300px] h-[300px] bg-cover bg-no-repeat pointer-events-none hidden"
             style={{
-              backgroundImage: `url(${filteredImages[selectedImage].url})`,
+              backgroundImage: `url(${
+                isCanvasImage && canvasDataUrl
+                  ? canvasDataUrl
+                  : filteredImages[selectedImage].url
+              })`,
               backgroundSize: "200%",
             }}
           ></div>
@@ -133,42 +141,44 @@ const ImageGallery: React.FC<{ images: Image[] }> = ({ images }) => {
 
       {/* Thumbnails */}
       <div className="flex space-x-3 mt-4">
-        {filteredImages.map((image: Image, index: number) => (
+        {filteredImages.map((image, index) => (
           <div
             key={image.uid}
             onClick={() => handleImageClick(index)}
-            className={`cursor-pointer ${
+            className={`relative cursor-pointer ${
               selectedImage === index
                 ? "border border-gray-400"
                 : "border border-gray-200"
-            }`}
+            } w-12 h-12`}
           >
-            {image.title.slice(0, 5) === "Image" ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={image.thumbnailUrl}
-                alt={image.title}
-                className="w-12 h-12 object-contain p-[3px]"
-                onError={(e) => {
-                  const imgElement = e.target as HTMLImageElement;
-                  imgElement.src = "/Empty.jpg"; // Replace with your placeholder image URL
-                }}
+            {image.url.includes("carousel_3.png") ? (
+              <CanvasImage
+                url={image.url}
+                uid={image.uid}
+                width={48}
+                height={48}
               />
+            ) : image.title.slice(0, 5) === "Image" ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={image.thumbnailUrl}
+                  alt={image.title}
+                  className="w-full h-full object-contain p-[2px]"
+                  onError={(e) =>
+                    ((e.target as HTMLImageElement).src = "/Empty.jpg")
+                  }
+                />
+              </>
             ) : (
-              <div className="relative w-12 h-12">
+              <div className="relative w-full h-full">
                 <video
                   src={image.thumbnailUrl}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <button className="p-1 flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/play.png"
-                      alt="play button"
-                      className="w-3 h-3"
-                    />
-                  </button>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/play.png" alt="play" className="w-3 h-3" />
                 </div>
               </div>
             )}

@@ -3,9 +3,18 @@ import React, { useEffect, useRef } from "react";
 interface CanvasImageProps {
   url: string;
   uid: string;
+  width?: number; // optional pixel width
+  height?: number; // optional pixel height
+  onReady?: (dataUrl: string) => void; // callback for magnifier
 }
 
-const CanvasImage: React.FC<CanvasImageProps> = ({ url, uid }) => {
+const CanvasImage: React.FC<CanvasImageProps> = ({
+  url,
+  uid,
+  width,
+  height,
+  onReady,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -19,23 +28,34 @@ const CanvasImage: React.FC<CanvasImageProps> = ({ url, uid }) => {
     img.src = url;
 
     img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
+      const canvasWidth = width || img.width;
+      const canvasHeight = height || img.height;
 
-      // ✅ Draw UID text
-      ctx.font = "bold 16px Arial";
-      ctx.fillStyle = "black";
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      // Draw the image scaled
+      ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+      // Draw UID text
+      ctx.font = canvasWidth <= 50 ? "500 5px Arial" : "500 1.6em Arial";
+      ctx.fillStyle = "#1E2939";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
 
-      const x = canvas.width - 68; // little away from right edge
-      const y = canvas.height / 2 + 33; // a bit below center
+      // const x = canvasWidth - 38;
+      // const y = canvasHeight / 2 + 32;
+      const x = canvasWidth - canvasWidth * 0.15; // 5% from right
+      const y = canvasHeight * 0.675;
       ctx.fillText(uid, x, y);
-    };
-  }, [url, uid]);
 
-  return <canvas ref={canvasRef} style={{ maxWidth: "300px" }} />;
+      if (onReady) {
+        onReady(canvas.toDataURL());
+      }
+    };
+  }, [url, uid, width, height, onReady]);
+
+  return <canvas ref={canvasRef} className="object-contain w-full h-full" />;
 };
 
 export default CanvasImage;

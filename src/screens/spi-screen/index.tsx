@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import Image from "next/image";
+//import Image from "next/image";
 import { Ref, forwardRef, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 
@@ -17,7 +17,9 @@ import {
 //import { ComparePrices } from "@/components/divine-components";
 //import { SolitairePriceIndex } from "@/interface";
 //import useCountryCode from "@/hooks/use-country-code";
+import CanvasSPI from "@/components/common/canavas-spi";
 import { useCurrency } from "@/context/currency-context";
+import { SolitairePriceIndex } from "@/interface";
 import { formatByCurrency } from "@/util";
 //import { reverseCountryCurrencyMap } from "@/util/reverse-country-currency-map";
 
@@ -50,7 +52,7 @@ const CustomDatePicker = forwardRef(
 );
 
 const SolitairePriceIndexScreen: React.FC = () => {
-  //const [spi, setSpi] = useState<Array<SolitairePriceIndex>>([]);
+  const [spi, setSpi] = useState<SolitairePriceIndex>();
 
   const [comparedPrices, setComparedPrices] = useState<Array<SPIPrice>>([]);
 
@@ -59,7 +61,14 @@ const SolitairePriceIndexScreen: React.FC = () => {
 
   //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
-  const countrycode = currency;//reverseCountryCurrencyMap[currency];
+  const countrycode = currency; //reverseCountryCurrencyMap[currency];
+
+  // Date Logic
+  const currentDate = new Date();
+  currentDate.setDate(1);
+  const firstDayOfMonth = `${currentDate.getDate()}`;
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+  const currentYear = currentDate.getFullYear();
 
   const toggleReadMoreLess = () => {
     setIsShowMore(!isShowMore);
@@ -95,6 +104,7 @@ const SolitairePriceIndexScreen: React.FC = () => {
   };
 
   useEffect(() => {
+    getSpiImageData();
     // const getlistdata = async (currentDate: Date) => {
     //   //SetselectedDate(currentDate);
     //   const currentMonthNumber = String(currentDate.getMonth() + 1).padStart(
@@ -124,6 +134,30 @@ const SolitairePriceIndexScreen: React.FC = () => {
 
   const removePriceFromList = (idx: number) => () => removePrice(idx);
 
+  const getSpiImageData = async () => {
+    try {
+      const currentDate = new Date();
+      const currentMonthNumber = `${currentDate.getMonth() + 1}`; // Months are zero-indexed in JS
+      const currentYear = currentDate.getFullYear();
+
+      const result = await getSolitairePriceIndex(
+        currentMonthNumber,
+        currentYear,
+        countrycode as string
+      );
+
+      if (!result.data || !result.data.data) {
+        throw new Error("Invalid SPI data received.");
+      } else {
+        setSpi(result.data.data);
+      }
+
+      console.log("Data", result.data.data);
+    } catch (error) {
+      console.error("Error generating SPI image:", error);
+    }
+  };
+
   return (
     <div className="gap-24">
       <div className="xl:max-w-5xl 2xl:max-w-6xl m-auto">
@@ -138,14 +172,30 @@ const SolitairePriceIndexScreen: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center self-stretch">
           {/* First column */}
           <div className="flex flex-col gap-2 md:w-1/2">
-            <Image
+            {/* <Image
               //src=`{/api/get-spi-image?currency=${currency}}`
               src={`/api/get-spi-image?currency=${currency}`}
-              alt="spiimage"
+              alt="spiimage" 
               height={0}
               width={0}
               sizes="100vw"
               className="w-full h-auto"
+            /> */}
+            <CanvasSPI
+              url="/edit/spi_banner.png" // your uploaded yellow template
+              data={{
+                currentMonth: currentMonth,
+                currentYear: currentYear.toString(),
+                firstDayOfMonth: firstDayOfMonth.toString(),
+                Current_Month_SPI: spi?.Current_Month_SPI || 0,
+                Growth_Month_Percentage: spi?.Growth_Month_Percentage || 0,
+                Growth_Year_Percentage: spi?.Growth_Year_Percentage || 0,
+                currency_locale: spi?.currency_locale || "",
+                // Growth_Month_Percentage: 99.99,
+                // Growth_Year_Percentage: 99.99,
+              }}
+              width={1280}
+              height={768}
             />
           </div>
           {/* Second column */}
