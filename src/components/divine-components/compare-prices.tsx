@@ -62,6 +62,7 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
   ccode,
 }) => {
   const removePriceWrapper = (idx: number) => () => removePrice(idx);
+  
   return (
     <div className={className}>
       <div className="flex flex-col gap-4">
@@ -85,7 +86,7 @@ const ComparePrices: React.FC<ComparePricesProps> = ({
             {comparisions.map((priceItem, idx) => (
               <SwiperSlide key={idx} className="!max-w-xl p-2">
                 <div
-                  className="relative flex bg-[#fffaf3] justify-center items-center px-14 py-5 mx-2"
+                  className="relative flex bg-[#fffaf3] justify-center items-center px-12 py-5 mx-2"
                   key={priceItem.month}
                 >
                   <XIcon

@@ -146,6 +146,8 @@ const SolitairePriceIndexScreen: React.FC = () => {
         countrycode as string
       );
 
+      console.log("SPI Result", result);
+
       if (!result.data || !result.data.data) {
         throw new Error("Invalid SPI data received.");
       } else {
@@ -157,6 +159,8 @@ const SolitairePriceIndexScreen: React.FC = () => {
       console.error("Error generating SPI image:", error);
     }
   };
+
+  //console.log("SPI DATA", spi?.currency_locale);
 
   return (
     <div className="gap-24">

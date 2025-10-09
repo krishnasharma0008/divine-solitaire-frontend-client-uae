@@ -278,7 +278,6 @@ const useSolitairePrice = () => {
     return state.clarity;
   };
 
-  //const countrycode = useCountryCode();
   const { currency } = useCurrency(); //for currency
   const countrycode = currency; //reverseCountryCurrencyMap[currency];
 
@@ -384,6 +383,7 @@ const useSolitairePrice = () => {
 
     try {
       const addedComparison = await fetchComparisonData(date);
+      console.log("addedComparison", addedComparison);
 
       setComparedPrices([...comparedPrices, addedComparison]);
     } catch (error) {
@@ -391,12 +391,41 @@ const useSolitairePrice = () => {
     }
   };
 
+  // 🔁 Automatically refresh when countrycode changes
+  useEffect(() => {
+    if (comparedPrices.length > 0 && countrycode) {
+      const refreshComparisons = async () => {
+        try {
+          const refreshed = await Promise.all(
+            comparedPrices.map((item) =>
+              fetchComparisonData(new Date(item.date))
+            )
+          );
+          setComparedPrices(
+            refreshed.sort(
+              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            )
+          );
+          console.log("✅ Comparison data refreshed for", countrycode);
+        } catch (error) {
+          console.error(
+            "Error refreshing comparisons on country change:",
+            error
+          );
+        }
+      };
+
+      refreshComparisons();
+    }
+  }, [countrycode]); // 👈 triggers automatically when country changes
+
   const fetchComparisonData = async (date: Date) => {
     try {
       state.month = date.getMonth() + 1;
       state.year = date.getFullYear();
       //countrycode as string
-      const res = await comparePastPrices(state, "AE-0");
+      //const res = await comparePastPrices(state, "AE-0");
+      const res = await comparePastPrices(state, countrycode as string);
 
       return {
         month: date.toDateString(),
@@ -465,6 +494,8 @@ const useSolitairePrice = () => {
           collect_data.push(addedComparison);
         })
       );
+
+      console.log("collect_data", collect_data);
 
       setComparedPrices(collect_data);
     }

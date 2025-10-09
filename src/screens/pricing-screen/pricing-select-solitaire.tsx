@@ -258,6 +258,7 @@ const SelectYourSolitaire: React.FC = () => {
         </div>
         <Separator />
         <div className="px-2 mb-2">
+          {/* for Mobile view */}
           <div className="font-semibold text-lg">Compare Past Prices :-</div>
           <div className="text-gray_light">
             Please choose to compare with past price list
