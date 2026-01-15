@@ -27,7 +27,7 @@ import {
 } from "@/util";
 
 import RequisitionForm from "./requisition-form";
-import { VerifyTrackSummaryDetailsAccordion } from "./verify-track-summary-accordion";
+//import { VerifyTrackSummaryDetailsAccordion } from "./verify-track-summary-accordion"; for purchase information
 import VerifyTrackSummaryMountAccordion from "./verify-track-summary-accordion/verify-track-summary-mount-accordion";
 import VerifyTrackSummarySltAccordion from "./verify-track-summary-accordion/verify-track-summary-slt-accordion";
 import VerifyTrackSummaryPopup from "./verify-track-summary-popup";
@@ -378,7 +378,7 @@ const VerifyTrackSummary: React.FC = () => {
         )}
         {isSoldProduct(productDetails) && (
           <>
-            <VerifyTrackSummaryDetailsAccordion
+            {/* <VerifyTrackSummaryDetailsAccordion
               discount={productDetails.purchase_discount}
               purchaseAmount={productDetails.purchase_price as number}
               premium={0}
@@ -386,7 +386,7 @@ const VerifyTrackSummary: React.FC = () => {
               currency_locale={productDetails.currency_locale}
               currency_code={productDetails.currency_code}
               className="mt-9"
-            />
+            /> */}
             <div className="mt-4 text-base sm:text-lg px-4 font-medium">
               {"Jeweller's Name:"}
             </div>
